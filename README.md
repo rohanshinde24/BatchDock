@@ -89,3 +89,7 @@ The real-model check ran locally with an installed `gemma2:2b`; it installs no m
 - Export buffers a snapshot with a conservative 64 MiB worst-case JSON preflight. It may reject an actual ASCII export smaller than that; split batches until streaming is implemented.
 - No native dashboard, automatic discovery, public workers or model downloads.
 - Next validation: two physical Macs over SSH, interrupted-worker recovery on that setup, a tuned single-Mac versus multi-Mac benchmark, and an actual collaborator pilot. No speedup or user-adoption result is claimed.
+
+## Production roadmap
+
+The next phase is planned, with implementation paused. See [production milestones and acceptance criteria](ROADMAP.md) for operability, fault campaigns, physical multi-Mac benchmarks, resource controls and independent pilot gates. These are planned acceptance targets, not delivered production claims.
