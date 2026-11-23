@@ -1,0 +1,29 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - name: Swift toolchain
+        run: swift --version
+      - name: Build and test
+        run: swift test --parallel --jobs 3
+      - name: Coordinator HTTP acceptance
+        run: python3 scripts/acceptance.py
+      - name: Worker retries a transient inference failure
+        run: python3 scripts/worker-retry.py

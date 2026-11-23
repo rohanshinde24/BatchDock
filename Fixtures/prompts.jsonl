@@ -1,0 +1,3 @@
+{"id":"kettle","prompt":"Extract only the product name from: The blue kettle arrived."}
+{"id":"lamp","prompt":"Extract only the product name from: I bought a desk lamp."}
+{"id":"backpack","prompt":"Extract only the product name from: The hiking backpack has two pockets."}
