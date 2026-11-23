@@ -6,6 +6,8 @@ Scope remains a small trusted team, one coordinator/local SQLite and enrolled Ma
 
 ## Milestones in execution order
 
+Gate IDs are retained for reference; P5 is optional. The immediate work after authorization is only P0 and the minimal P1 prerequisite, then the feasibility decision. Later gates are not additional prerequisites for that experiment.
+
 | Gate | Deliverable | Acceptance evidence |
 | --- | --- | --- |
 | P0 — Baseline/contracts | Reproduce checks and establish runtime/output semantics | Fresh-checkout build/tests; versioned reports; controlled natural-stop, output-limit, oversized-input and context-boundary probes. Independently validated short benchmark outputs; ambiguous truncation cannot count as useful throughput. |
@@ -16,19 +18,24 @@ Scope remains a small trusted team, one coordinator/local SQLite and enrolled Ma
 | P5 — Optional resource optimization | Profile before changing admission/scheduling | Instruments/telemetry identify a bottleneck; repeated before/after measurements show a declared improvement within memory and latency guardrails. Preserve P3 invariants under load. Can defer for a fixed-slot release. |
 | P6 — Pilot/release acceptance | Independent reuse and supported release | Two independent collaborators, two datasets, three completed batches and one repeat user. Record setup/help/rejection, validate supported extraction/output contracts and complete release smoke/installation checks. |
 
-Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Fix only a minimal execution-contract blocker before P1 if needed to make its outputs valid. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
+Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Finish-reason decoding/persistence and strict benchmark completion checks are mandatory before P1, with regression tests; the unchanged adapter cannot pass this prerequisite. Finish reason alone does not establish full prompt processing or semantic correctness. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
 
 ## Feasibility hypotheses and transport
 
-Provisional diagnostic thresholds: the tuned two-Mac script reaches at least 80% of comparable combined single-Mac throughput; BatchDock makespan stays within 10% of that script at equivalent concurrency. These are hypotheses, not universal release laws. Investigate hardware/workload effects and explain any threshold revision before rerunning. Passing demonstrates feasibility and overhead, not unique product value. Continuing after a poor result needs a concrete optimization hypothesis or user evidence for recovery/accounting value.
+Provisional diagnostic thresholds: the tuned two-Mac script reaches at least 80% of comparable combined single-Mac throughput; BatchDock makespan stays within 10% of that script at equivalent concurrency. Freeze workload, tuning/exclusion rules and the decision rule before the first measured run: go if output checks and both thresholds pass; narrow if outputs are valid but either performance threshold fails, with an explicit continuation hypothesis; stop for invalid evidence, integrity failure or no credible continuation hypothesis. Preserve the original results/verdict. Later thresholds belong to a separately identified experiment and cannot retroactively change that verdict. Passing demonstrates feasibility and overhead, not unique product value. Continuing after a poor result needs a concrete optimization hypothesis or user evidence for recovery/accounting value.
 
 Keep loopback binding and SSH host-key validation. New collaborators need restricted forwarding-only access or another reviewed transport/access design, not unrestricted shell access solely for a worker token. An owner-operated experiment with existing broad SSH trust is not proof of collaborator onboarding. Tailscale is an option to evaluate; it does not automatically satisfy application transport/authorization policy. No access or host-configuration changes are authorized by this plan.
+
+The user confirms access to a second Mac through ownership or borrowing. Hardware/RAM, matching installed model/runtime and restricted transport remain unverified; check them in P0 only after execution resumes. No hardware setup is authorized during the hold.
 
 ## Execution contract and accepted corrections
 
 - Decode and preserve finish reason and bounded partial output. Extraction defaults to rejecting length-limited/incomplete generation. Natural stop does not prove semantic correctness; define JSON/schema validation for the pilot workload. Chat endpoint support follows demonstrated need.
 - Verify overflow behavior for supported runtime versions. Prompt/output token-count sums alone cannot prove that original input was not truncated. Unknown behavior must stay explicit.
 - Separate task-error budgets from infrastructure outages and worker incompatibility. Persist bounded recovery/backoff policy with an overall deadline or visible blocked state; avoid both rapid exhaustion and invisible endless retry.
+- Coordinator sleep expires leases safely on wake; test simultaneous reclamation without invalid writes or task-budget loss. Document laptop limitations; sleep inhibition must be explicit opt-in.
+- A restarted worker reconciles its spool and waits visibly/automatically for old ownership to expire. Faster takeover is optional and requires atomic fencing; a fresh incarnation alone cannot revoke live ownership. Test a still-running prior process.
+- Persist/retry or otherwise durably reconcile failure reports after lost requests/acknowledgments and restart. Preserve completion precedence, handle stale ownership, and measure healthy failure-delivery recovery separately from kill/lease expiry.
 - Runtime discovery and completion reconciliation belong in a recoverable lifecycle. A supported runtime restart or long transport outage must not require manual worker restart or deleting a completion spool.
 - Preserve strict identity; a mismatched worker leaves work available for compatible workers. Record observed versus expected identity. Before/after model checks detect some accidental changes; they do not attest to executed weights.
 - Bound/index compatible claim selection. On a declared 10,000-job fixture it must not load all queued prompts; measure heartbeat interference and require p99 healthy heartbeat acknowledgment below half the configured lease duration.
