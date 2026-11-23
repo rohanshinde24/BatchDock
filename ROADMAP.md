@@ -1,40 +1,57 @@
 # Production roadmap
 
-**Status: planning only. Production implementation has not started.** The current release is a working CLI MVP. This roadmap defines the next acceptance gates for a small trusted team; it does not describe completed production features.
+**Planning only: do not start implementation, services, workloads or deployment until execution is explicitly resumed.** BatchDock is prioritized; GatePass work is deferred. All gates below remain unaccepted. These are proposed requirements, not delivered production capabilities.
 
-The deployment boundary remains one coordinator with local SQLite and enrolled Mac workers using existing SSH access. Users select an installed model; each batch pins its digest, Ollama version and generation settings. Workers execute whole independent prompts. High availability, public workers, tensor parallelism, training and multi-tenancy are outside this release.
+Scope remains a small trusted team, one coordinator/local SQLite and enrolled Mac workers. Users select installed models; strict mode pins model digest, runtime version and generation settings. Whole prompts execute on individual workers. High availability, public workers, tensor parallelism and training remain out of scope.
 
-## Milestones
+## Milestones in execution order
 
 | Gate | Deliverable | Acceptance evidence |
 | --- | --- | --- |
-| P0 — Baseline | Reproducible build, tests and measurement definitions | Fresh-checkout checks pass; report source/lock/workload hashes, model/runtime/options, hardware, topology and exact commands. Separate simulated, local-model and physical multi-Mac runs. |
-| P1 — Operability | Supported setup, shutdown, backup/restore, upgrades and credential operations | Restore at least 100 accepted synthetic outputs plus pending work in isolation; verify backed-up hashes and documented recovery. Test old-schema upgrade, reject duplicate coordinators before state mutation, and preserve secrets in logs/files. |
-| P2 — Fault campaign | Reproducible correctness checks across crashes, ambiguity and overload failures | At least 1,000 seeded scenarios / 10,000 synthetic jobs, with at least 20 scenarios per named fault class. Zero duplicate accepted results, stale successful writes or lost acknowledged results under process crashes; every input has one ordered terminal export row. |
-| P3 — Physical Macs | Real SSH onboarding, recovery and controlled benchmarks | Two physical Macs complete 200 inputs and recover a worker disconnect; both receive work. Evaluate two supported installed model identities separately. Compare a script, tuned single-Mac BatchDock and two Macs over at least three runs per configuration, separating cold/warm starts. |
-| P4 — Resource controls | Profiling-led admission/backpressure experiment | Instruments traces identify a bottleneck. Repeated comparisons target ≥20% lower p95 queue wait without >5% throughput regression, or ≥15% higher throughput within declared memory budgets without >5% p95 completion-latency regression. Preserve correctness under load. |
-| P5 — Pilot/release | Independent reuse and a reproducible release | Two independent collaborators, two real datasets, three completed batches and at least one repeat user; record onboarding and assistance. Verify clean installation, checksums, compatibility, rollback and release smoke tests. |
+| P0 — Baseline/contracts | Reproduce checks and establish runtime/output semantics | Fresh-checkout build/tests; versioned reports; controlled natural-stop, output-limit, oversized-input and context-boundary probes. Independently validated short benchmark outputs; ambiguous truncation cannot count as useful throughput. |
+| P1 — Early two-Mac feasibility | Throughput-only experiment before substantial hardening | Two physical Macs process at least 200 validated short inputs with both receiving work. Compare each Mac alone, a tuned two-Mac script, tuned single-Mac BatchDock and two-Mac BatchDock at equivalent concurrency; at least three runs/configuration, separating cold/warm starts. Record a go/narrow/stop decision. |
+| P2 — Correctness and worker lifecycle | Resolve known execution, retry, recovery and claim-selection gaps | Targeted regressions for incomplete output, overflow policy, repeated503s, runtime restart, long transport outages/spool replay, model mismatch and bounded task versus infrastructure budgets. Worker resumes supported transient failures automatically. Claim selection no longer materializes every queued prompt. |
+| P3 — Layered faults/physical recovery | Fast invariant checker plus focused real failures | Seeded in-process store/reference-model checks with fake clock; roughly 5–8 coverage-driven HTTP/process scenario groups; physical two-Mac disconnect/reconnect, worker kill and coordinator restart. No duplicate accepted results, stale successful writes or lost acknowledged results under tested process-crash conditions. |
+| P4 — Bounded operability | Proportionate release, restore and access procedures | Isolated restore verifies at least 100 backed-up accepted outputs plus pending work; upgrade/rollback, clean installation, credential boundaries and diagnostic procedures pass. Explicit durability tiers and host resource limits. |
+| P5 — Optional resource optimization | Profile before changing admission/scheduling | Instruments/telemetry identify a bottleneck; repeated before/after measurements show a declared improvement within memory and latency guardrails. Preserve P3 invariants under load. Can defer for a fixed-slot release. |
+| P6 — Pilot/release acceptance | Independent reuse and supported release | Two independent collaborators, two datasets, three completed batches and one repeat user. Record setup/help/rejection, validate supported extraction/output contracts and complete release smoke/installation checks. |
 
-All gates are **not yet accepted**. P4 is optional for a fixed-slot release; it is required before claiming adaptive scheduling or its performance improvements. A failed experiment must be reported, and does not justify shipping an unproven scheduler.
+Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Fix only a minimal execution-contract blocker before P1 if needed to make its outputs valid. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
 
-## Correctness and recovery requirements
+## Feasibility hypotheses and transport
 
-- Exercise lost claim/completion/failure responses, duplicate/reordered requests, competing incarnations, worker/coordinator crashes, delayed or partitioned transport, cancellation races, revocation, model changes, clock/sleep behavior, runtime errors and isolated storage/write failures.
-- Accepted results must match their immutable manifest. Identical retries replay their outcome; changed payloads conflict. Restarting a worker cannot bypass ownership or attempt budgets.
-- In the controlled replacement-worker test, target p95 reassignment within lease duration + poll interval + 2 seconds. Measure from acknowledged kill injection to replacement claim acknowledgment; inference completion is separate. This is an experiment target, not a production SLA.
-- Process-crash durability is distinct from backup recovery. Restore guarantees cover the documented backup boundary, not all subsequent acknowledged work. Use a stopped coordinator or consistent SQLite backup API; copying only a live WAL-mode main file is unsupported.
-- Fault injection must remain isolated: no filling the host disk, changing host clocks, disabling SSH host-key checks or altering unrelated network services.
+Provisional diagnostic thresholds: the tuned two-Mac script reaches at least 80% of comparable combined single-Mac throughput; BatchDock makespan stays within 10% of that script at equivalent concurrency. These are hypotheses, not universal release laws. Investigate hardware/workload effects and explain any threshold revision before rerunning. Passing demonstrates feasibility and overhead, not unique product value. Continuing after a poor result needs a concrete optimization hypothesis or user evidence for recovery/accounting value.
 
-## Benchmark and evidence contract
+Keep loopback binding and SSH host-key validation. New collaborators need restricted forwarding-only access or another reviewed transport/access design, not unrestricted shell access solely for a worker token. An owner-operated experiment with existing broad SSH trust is not proof of collaborator onboarding. Tailscale is an option to evaluate; it does not automatically satisfy application transport/authorization policy. No access or host-configuration changes are authorized by this plan.
 
-Record workload hashes, model tag/full digest, quantization, context/output limits, generation settings, runtime version, Mac hardware/RAM, concurrency, topology and source revision. Report all runs, sample sizes, medians, p95 timings, throughput, retries, failures and memory measurements. Separate queue wait, inference and end-to-end completion; improvements must not simply move waiting into Ollama.
+## Execution contract and accepted corrections
 
-Speedup uses the tuned one-Mac baseline. Two processes sharing one Mac/Ollama instance establish coordination behavior, not multi-Mac performance. There is no predetermined speedup requirement. If additional Macs do not help, the report must explain the result and the product decision.
+- Decode and preserve finish reason and bounded partial output. Extraction defaults to rejecting length-limited/incomplete generation. Natural stop does not prove semantic correctness; define JSON/schema validation for the pilot workload. Chat endpoint support follows demonstrated need.
+- Verify overflow behavior for supported runtime versions. Prompt/output token-count sums alone cannot prove that original input was not truncated. Unknown behavior must stay explicit.
+- Separate task-error budgets from infrastructure outages and worker incompatibility. Persist bounded recovery/backoff policy with an overall deadline or visible blocked state; avoid both rapid exhaustion and invisible endless retry.
+- Runtime discovery and completion reconciliation belong in a recoverable lifecycle. A supported runtime restart or long transport outage must not require manual worker restart or deleting a completion spool.
+- Preserve strict identity; a mismatched worker leaves work available for compatible workers. Record observed versus expected identity. Before/after model checks detect some accidental changes; they do not attest to executed weights.
+- Bound/index compatible claim selection. On a declared 10,000-job fixture it must not load all queued prompts; measure heartbeat interference and require p99 healthy heartbeat acknowledgment below half the configured lease duration.
+- Provide worker freshness/inspection and specific blocked reasons, or label health unknown. Retain the existing fencing fields, completion spools, atomic results and failure receipts.
 
-Each acceptance item needs a status, reproduction command, environment, expected/observed result and evidence artifact. Publish sanitized reports and synthetic fixtures; keep credentials and real datasets private. Resume-style figures such as 2.8x speedup or 99.9% success are illustrative possibilities, not current results or release guarantees.
+## Fault and measurement design
 
-## Current evidence and next execution
+Use the store-level checker for most combinatorial exploration. A starting reproducibility budget is 1,000 seeded scenarios across 10,000 synthetic jobs; report transition/fault coverage, seeds and minimized failures. Counts alone do not establish quality. There is no per-class quota and no requirement for 1,000 HTTP scenarios.
 
-The MVP passed 16 Swift tests, real HTTP recovery checks and a transient-worker retry check. Local gemma2:2b inference succeeded, including a 12-input run split across two processes on one Mac. Physical multi-Mac operation, production usage and performance improvements remain unverified. See [README validation](README.md#validation-and-reproduction).
+Focused process/network cases cover dropped post-commit responses, crashes, runtime unavailability, real disconnect/reconnect, spool replay, cancellation and revocation. Inject storage failures in isolation without changing host clocks, filling disks or disrupting unrelated networking. Every input must have one ordered terminal export row, including explicit failures; never fabricate success.
 
-Sequence: P0 → P1 → P2 → P3, then profiling-driven P4 if justified and P5 release/pilot acceptance. The next implementation session must begin with P0 only after execution is resumed. GatePass work is deferred while BatchDock is prioritized.
+For healthy replacement-worker tests, target p95 reassignment ≤ lease duration + polling interval + 2 seconds, measured from acknowledged kill injection to replacement claim acknowledgment. Measure recovery after network/runtime restoration and inference completion separately. Publish sample counts and outliers; these are experiment targets, not availability SLAs.
+
+Record revision/lock/workload hashes, model/digest/quantization/runtime/options, hardware/RAM, topology, concurrency, stage durations and exact commands. Correlated monotonic harness events can establish initial timings; P0 does not require a database timestamp migration. Separate simulated inference, actual local inference and physical multi-Mac evidence. Never compare process-local monotonic instants across restarts or hosts.
+
+P5 provisional targets: ≥20% lower p95 queue wait without >5% throughput regression, or ≥15% higher throughput inside declared memory budgets without >5% p95 end-to-end latency regression. Report all runs, thermal context, instrumentation overhead and failed hypotheses. Waiting must not merely move into Ollama's queue. Multiple worker identities sharing one runtime share one host budget; a slot-count schema change alone is insufficient resource control.
+
+## Durability, pilots and current evidence
+
+Separate process-crash, consistent-backup and power-loss guarantees. Use a stopped coordinator or consistent SQLite backup API, never just a live WAL-mode main file. State the backup recovery point; later unbacked work is outside it. Review macOS database/spool flush behavior before any power-loss claim; FULL synchronous mode alone is not proof of every hardware guarantee.
+
+Pilot onboarding targets ≤10 minutes from prerequisites-ready to first valid output, with installation/access provisioning and assistance recorded separately. Report all outcomes with explicit denominators. Small pilots do not establish 99.9% availability or success; illustrative resume numbers are not observed results.
+
+Historical MVP checks passed 16 Swift tests, real HTTP recovery and a transient-worker retry case. Local gemma2:2b inference and a 12-input/two-process emulation succeeded. Source review also identified the unresolved P2 gaps above. These passing cases do not establish general self-recovery, truncation safety, physical multi-Mac performance or production readiness. See [README validation](README.md#validation-and-reproduction).
+
+The earlier 20–40 focused-hour estimate describes a bounded technical beta, not this full production contract and pilot calendar. Re-estimate after P0 and P1. Hardware access and failure discoveries affect engineering effort; real reuse requires collaborator time. Keep private data/credentials out of public reports.

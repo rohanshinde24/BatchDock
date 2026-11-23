@@ -92,4 +92,4 @@ The real-model check ran locally with an installed `gemma2:2b`; it installs no m
 
 ## Production roadmap
 
-The next phase is planned, with implementation paused. See [production milestones and acceptance criteria](ROADMAP.md) for operability, fault campaigns, physical multi-Mac benchmarks, resource controls and independent pilot gates. These are planned acceptance targets, not delivered production claims.
+The next phase is planned, with implementation paused. See [production milestones and acceptance criteria](ROADMAP.md) for an early two-Mac feasibility test, execution/recovery fixes, layered fault validation, operability, optional resource controls and independent pilots. These are planned acceptance targets, not delivered production claims.
