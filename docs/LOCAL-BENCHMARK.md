@@ -66,4 +66,6 @@ The runner stops its owned coordinators, workers, tunnels, SSH daemon and simula
 
 Raw plans, outputs, database, logs, worker credentials, keys and observations stay ignored under `.batchdock/`. Do not publish raw SSH checks: key comments/logs can identify the local account or hostname. The committed sanitized summary contains only counts, generic environment/model identity, hashes and restriction outcomes.
 
+Local validation passed 12 simulated-inference runs and 12 real-Ollama runs (4,800 exact checked outputs total), on Mac15,12 /16 GiB /macOS26.3.1. Real inference used Ollama0.33.3 and gemma2:2b digest `8ccf136fdd5298f3ffe2d69862750ea7fb56555fa4d5b18c04e3fa4d82ee09d7`. All three real two-worker runs accepted100 outputs on each worker. Independent artifact verification, four output-acceptance tests and five artifact-tamper rejection cases passed. Owned-process cleanup passed; existing Ollama remained running.
+
 See [local-emulation summary](local-emulation-summary.json) for measured validation evidence. These reports leave physical P1 pending and do not begin P2.

@@ -60,7 +60,267 @@
         "reverse_socket": true,
         "untrusted_key": true,
         "wrong_host_key": true
-      }
+      },
+      "shared_real_ollama": false,
+      "diagnostic_runs": [
+        {
+          "repetition": 1,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 3.355,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 1,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 2.452,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 6.859,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        },
+        {
+          "repetition": 2,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 4.983,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 2,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 2.476,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 1,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 6.801,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        },
+        {
+          "repetition": 2,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 3.535,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 0,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 3.515,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 1,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 4.956,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 4.896,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 2.584,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 2,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 6.905,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        }
+      ]
+    },
+    {
+      "runtime_kind": "ollama",
+      "records_per_run": 200,
+      "distinct_prompts": 3,
+      "repetitions_per_configuration": 3,
+      "runs": 12,
+      "checked_outputs": 2400,
+      "all_outputs_valid": true,
+      "both_workers_participated_each_two_worker_run": true,
+      "owned_processes_stopped": true,
+      "independent_artifact_verification": true,
+      "plan_sha256": "95be7f2d8bff3a03e33648df7bf4aa858ac9097fadbf3ea33c0258b3148d1538",
+      "harness_sha256": "8661bea3005a52e895dadf34d912212ce6b1198955d8cbc9306664720ddc2246",
+      "verifier_sha256": "6c8484061daa83b8bc049b21bddb3491eddec8b1dbf9015493a6a8df57db78d2",
+      "binary_sha256": "f42eef2e8aa8893ba8170c2d0946d015b1579350397a5833d8cda7e4ed2f488b",
+      "lock_sha256": "2a5d214fcb97afdcd3b54c6cfcbaa505043c479ff32105738c3dd9f9f42047f0",
+      "source_revision_at_run": "f8840c0b8068b68c2f8da103b0aa211d54dcf9fd",
+      "source_dirty_at_run": true,
+      "schedule_seed": 42,
+      "hardware": {
+        "macos": "26.3.1",
+        "model": "Mac15,12",
+        "ram_bytes": 17179869184
+      },
+      "model": {
+        "attempt_limit_seconds": 600,
+        "generation": {
+          "format": "text",
+          "options": {
+            "num_ctx": 4096,
+            "num_predict": 64,
+            "seed": 42,
+            "temperature": 0
+          },
+          "system": "Answer concisely."
+        },
+        "model": {
+          "digest": "8ccf136fdd5298f3ffe2d69862750ea7fb56555fa4d5b18c04e3fa4d82ee09d7",
+          "ollama_version": "0.33.3",
+          "tag": "gemma2:2b"
+        },
+        "protocol_version": 1
+      },
+      "ssh_allowed_forward": true,
+      "ssh_host_key_pinned": true,
+      "ssh_denials": {
+        "shell": true,
+        "sftp": true,
+        "pty": true,
+        "other_destination": true,
+        "reverse_tcp": true,
+        "reverse_socket": true,
+        "untrusted_key": true,
+        "wrong_host_key": true
+      },
+      "shared_real_ollama": true,
+      "diagnostic_runs": [
+        {
+          "repetition": 1,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 47.842,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 1,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 46.949,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 57.471,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        },
+        {
+          "repetition": 2,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 52.261,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 2,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 55.633,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 1,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 61.913,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        },
+        {
+          "repetition": 2,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 54.599,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 0,
+          "configuration": "batchdock_two_workers_ssh",
+          "elapsed_seconds": 54.318,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            100,
+            100
+          ]
+        },
+        {
+          "repetition": 1,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 54.942,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "direct_one_slot",
+          "elapsed_seconds": 55.538,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 0,
+          "configuration": "direct_two_slots",
+          "elapsed_seconds": 60.114,
+          "checked_outputs": 200,
+          "worker_accepted_counts": null
+        },
+        {
+          "repetition": 2,
+          "configuration": "batchdock_one_worker",
+          "elapsed_seconds": 61.792,
+          "checked_outputs": 200,
+          "worker_accepted_counts": [
+            200
+          ]
+        }
+      ]
     }
   ],
   "limitations": [
@@ -71,5 +331,12 @@
     "No speedup, physical P1 decision, remote onboarding or P2 acceptance.",
     "Unprivileged macOS sshd produced nonfatal BSM audit diagnostics.",
     "Harness was uncommitted during validation; exact harness/binary/lock hashes identify tested content."
-  ]
+  ],
+  "additional_local_checks": {
+    "output_acceptance_tests": 4,
+    "artifact_tamper_rejections_per_runtime_mode": 5,
+    "existing_swift_tests_cached_binary": 20,
+    "fresh_swift_rebuild_claimed": false,
+    "owned_process_scan_empty": true
+  }
 }
