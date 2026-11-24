@@ -27,3 +27,10 @@ jobs:
         run: python3 scripts/acceptance.py
       - name: Worker finish-reason and transient-failure regressions
         run: python3 scripts/worker-retry.py --all-finish-cases
+      - name: Local benchmark output acceptance
+        run: python3 scripts/test-benchmark-local.py
+      - name: Single-host SSH harness (simulated inference)
+        run: |
+          python3 scripts/benchmark-local.py --output-dir .batchdock/ci-emulation --records 200 --repetitions 1
+          python3 scripts/verify-local-benchmark.py .batchdock/ci-emulation
+          python3 scripts/test-verify-local-benchmark.py .batchdock/ci-emulation

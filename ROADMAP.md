@@ -1,12 +1,12 @@
 # Production roadmap
 
-**P0 only: baseline/runtime probes and mandatory finish handling are implemented and locally verified. P1 and later work, second-Mac setup and deployment remain on hold.** BatchDock is prioritized; GatePass work is deferred. P0 evidence is in [docs/P0.md](docs/P0.md). P1–P6 remain unaccepted; later requirements are proposed, not delivered capabilities.
+**P0 is implemented and verified. Single-host benchmark-harness preparation and isolated restricted SSH validation are authorized. Physical P1 remains pending real hardware; P2 and later implementation have not started.** BatchDock is prioritized; GatePass work is deferred. P0 evidence is in [docs/P0.md](docs/P0.md). P1–P6 remain unaccepted; later requirements are proposed, not delivered capabilities.
 
 Scope remains a small trusted team, one coordinator/local SQLite and enrolled Mac workers. Users select installed models; strict mode pins model digest, runtime version and generation settings. Whole prompts execute on individual workers. High availability, public workers, tensor parallelism and training remain out of scope.
 
 ## Milestones in execution order
 
-Gate IDs are retained for reference; P5 is optional. The immediate work after authorization is only P0 and the minimal P1 prerequisite, then the feasibility decision. Later gates are not additional prerequisites for that experiment.
+Gate IDs are retained for reference; P5 is optional. The current work validates local benchmark plumbing only; physical P1 then supplies the feasibility decision. Later gates are not additional prerequisites for that experiment.
 
 | Gate | Deliverable | Acceptance evidence |
 | --- | --- | --- |
@@ -18,7 +18,7 @@ Gate IDs are retained for reference; P5 is optional. The immediate work after au
 | P5 — Optional resource optimization | Profile before changing admission/scheduling | Instruments/telemetry identify a bottleneck; repeated before/after measurements show a declared improvement within memory and latency guardrails. Preserve P3 invariants under load. Can defer for a fixed-slot release. |
 | P6 — Pilot/release acceptance | Independent reuse and supported release | Two independent collaborators, two datasets, three completed batches and one repeat user. Record setup/help/rejection, validate supported extraction/output contracts and complete release smoke/installation checks. |
 
-Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Finish-reason decoding/persistence and strict benchmark completion checks are mandatory before P1, with regression tests; the unchanged adapter cannot pass this prerequisite. Finish reason alone does not establish full prompt processing or semantic correctness. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
+Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Finish-reason decoding/persistence and strict benchmark completion checks are mandatory before P1, with regression tests; this mandatory subset is implemented and regression-tested in P0. Finish reason alone does not establish full prompt processing or semantic correctness. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
 
 ## Feasibility hypotheses and transport
 
@@ -26,7 +26,7 @@ Provisional diagnostic thresholds: the tuned two-Mac script reaches at least 80%
 
 Keep loopback binding and SSH host-key validation. New collaborators need restricted forwarding-only access or another reviewed transport/access design, not unrestricted shell access solely for a worker token. An owner-operated experiment with existing broad SSH trust is not proof of collaborator onboarding. Tailscale is an option to evaluate; it does not automatically satisfy application transport/authorization policy. No access or host-configuration changes are authorized by this plan.
 
-The user confirms access to a second Mac through ownership or borrowing. Hardware/RAM, matching installed model/runtime and restricted transport remain unverified; check them in P0 only after execution resumes. No hardware setup is authorized during the hold.
+A second Mac may be owned or borrowed, but none is ready for this run. Its hardware/RAM, matching installed model/runtime and restricted transport remain unverified. The [local harness](docs/LOCAL-BENCHMARK.md) uses separate processes on one Mac and an isolated loopback SSH daemon; it does not enable Remote Login, contact another host or evaluate the physical P1 thresholds. Physical P1 stays pending until independent hardware is available and its run protocol is frozen. No P2 work is authorized.
 
 ## Execution contract and accepted corrections
 

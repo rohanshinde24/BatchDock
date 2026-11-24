@@ -1,0 +1,75 @@
+{
+  "label": "single_host_emulation",
+  "physical_hosts": 1,
+  "p1_status": "pending_real_hardware",
+  "p1_verdict": null,
+  "p1_thresholds_evaluated": false,
+  "p2_started": false,
+  "evidence": [
+    {
+      "runtime_kind": "fixture",
+      "records_per_run": 200,
+      "distinct_prompts": 3,
+      "repetitions_per_configuration": 3,
+      "runs": 12,
+      "checked_outputs": 2400,
+      "all_outputs_valid": true,
+      "both_workers_participated_each_two_worker_run": true,
+      "owned_processes_stopped": true,
+      "independent_artifact_verification": true,
+      "plan_sha256": "e6848e3b85303486167694b8ff83cc417bf746ab43b21d2f3050ba52fde5c222",
+      "harness_sha256": "8661bea3005a52e895dadf34d912212ce6b1198955d8cbc9306664720ddc2246",
+      "verifier_sha256": "6c8484061daa83b8bc049b21bddb3491eddec8b1dbf9015493a6a8df57db78d2",
+      "binary_sha256": "f42eef2e8aa8893ba8170c2d0946d015b1579350397a5833d8cda7e4ed2f488b",
+      "lock_sha256": "2a5d214fcb97afdcd3b54c6cfcbaa505043c479ff32105738c3dd9f9f42047f0",
+      "source_revision_at_run": "f8840c0b8068b68c2f8da103b0aa211d54dcf9fd",
+      "source_dirty_at_run": true,
+      "schedule_seed": 42,
+      "hardware": {
+        "macos": "26.3.1",
+        "model": "Mac15,12",
+        "ram_bytes": 17179869184
+      },
+      "model": {
+        "attempt_limit_seconds": 600,
+        "generation": {
+          "format": "text",
+          "options": {
+            "num_ctx": 4096,
+            "num_predict": 64,
+            "seed": 42,
+            "temperature": 0
+          },
+          "system": "Answer concisely."
+        },
+        "model": {
+          "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "ollama_version": "fixture-runtime",
+          "tag": "fixture:tiny"
+        },
+        "protocol_version": 1
+      },
+      "ssh_allowed_forward": true,
+      "ssh_host_key_pinned": true,
+      "ssh_denials": {
+        "shell": true,
+        "sftp": true,
+        "pty": true,
+        "other_destination": true,
+        "reverse_tcp": true,
+        "reverse_socket": true,
+        "untrusted_key": true,
+        "wrong_host_key": true
+      }
+    }
+  ],
+  "limitations": [
+    "One physical Mac; shared hardware and OS; real mode also shares one Ollama runtime.",
+    "200 distinct IDs cycle three fixture prompts; repeated prompt/cache effects are not representative throughput.",
+    "Bounded reference is not a tuned physical two-Mac baseline.",
+    "No forced cold starts; BatchDock timing includes worker startup.",
+    "No speedup, physical P1 decision, remote onboarding or P2 acceptance.",
+    "Unprivileged macOS sshd produced nonfatal BSM audit diagnostics.",
+    "Harness was uncommitted during validation; exact harness/binary/lock hashes identify tested content."
+  ]
+}
