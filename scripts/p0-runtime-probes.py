@@ -61,7 +61,9 @@ def main():
     cases = [
         ("natural_stop", "Return only the word kettle.", 512, 64, {}),
         ("output_limit", "Count upwards from one, continuing for one hundred numbers.", 512, 1, {}),
-        ("context_boundary", "alpha " * 80 + "Return kettle.", 128, 8, {}),
+        ("small_context_request", "alpha " * 80 + "Return kettle.", 128, 8, {}),
+        ("near_context_fit", "alpha " * 240 + "Return kettle.", 256, 1, {"truncate": False, "shift": False}),
+        ("near_context_overflow", "alpha " * 248 + "Return kettle.", 256, 1, {"truncate": False, "shift": False}),
         ("oversized_default", "alpha " * 4500 + "Return kettle.", 128, 8, {}),
         ("oversized_reject_requested", "alpha " * 4500 + "Return kettle.", 128, 8, {"truncate": False, "shift": False}),
         ("structured_output", 'Return JSON with one key product and string value kettle.', 512, 64, {"format": "json"}),

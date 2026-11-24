@@ -77,7 +77,7 @@ Each worker has its own credential. Remote workers reach the loopback coordinato
 | --- | --- |
 | `swift test -j 4` | 20 tests covering finish-reason rejection, private partial-output observations, ownership races, remaining lease on replay, stale results, restart fencing, cancellation, attempt budgets, authentication, strict input, export bounds and durable failure replay |
 | `python3 scripts/acceptance.py` | Real coordinator over HTTP with synthetic protocol workers: competing claims, submission/completion replay conflicts, lease expiry, SIGKILL restart, durable output and complete ordered cancellation export |
-| `python3 scripts/worker-retry.py --all-finish-cases` | Actual CLI/worker checks for 503 recovery, valid stop, length/missing/unknown/empty/unfinished rejection and model drift; rejected generations never become accepted output |
+| `python3 scripts/worker-retry.py --all-finish-cases` | Actual CLI/worker checks for 503 recovery, valid stop, length/missing/unknown/empty/unfinished rejection, model drift and observation-write failure; rejected generations never become accepted output |
 | `sh scripts/smoke-ollama.sh gemma2:2b` | Actual local Ollama: three fixture prompts completed through submission, worker processing, successful status and ordered export |
 
 P0 adds a stop-only finish policy, private per-attempt outcome observations and strict truncate/shift controls verified on Ollama0.33.3 with gemma2:2b. See [P0 evidence and reproduction](docs/P0.md) for raw-contract observations, limits, current tests and fixture validation. P1 has not started.
