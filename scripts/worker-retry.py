@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise the real CLI/worker against an explicitly simulated Ollama runtime."""
 
+import argparse
 import http.server
 import json
 import os
@@ -20,6 +21,7 @@ DIGEST = "a" * 64
 
 class SimulatedOllama(http.server.BaseHTTPRequestHandler):
     attempts = 0
+    finish_case = "retry"
 
     def log_message(self, *_):
         pass
@@ -36,17 +38,22 @@ class SimulatedOllama(http.server.BaseHTTPRequestHandler):
         if self.path == "/api/version":
             self.reply(200, {"version": "fixture-runtime"})
         elif self.path == "/api/tags":
-            self.reply(200, {"models": [{"name": "fixture:tiny", "digest": DIGEST}]})
+            self.reply(200, {"models": [{"name": "fixture:tiny", "digest": ("b" * 64 if type(self).finish_case == "model_changed" and type(self).attempts else DIGEST)}]})
         else:
             self.reply(404, {"error": "not_found"})
 
     def do_POST(self):
-        self.rfile.read(int(self.headers.get("Content-Length", "0")))
+        request = json.loads(self.rfile.read(int(self.headers.get("Content-Length", "0"))))
+        assert request["truncate"] is False and request["shift"] is False, request
         type(self).attempts += 1
-        if type(self).attempts == 1:
+        if type(self).finish_case == "retry" and type(self).attempts == 1:
             self.reply(503, {"error": "simulated transient runtime outage"})
         else:
-            self.reply(200, {"response": "fixture-output", "done": True, "eval_count": 1})
+            case = type(self).finish_case
+            body = {"response": "fixture-output", "done": case != "unfinished", "eval_count": 1}
+            if case != "missing":
+                body["done_reason"] = {"length": "length", "unknown": "future_reason", "empty": ""}.get(case, "stop")
+            self.reply(200, body)
 
 
 def unused_port():
@@ -55,7 +62,9 @@ def unused_port():
         return handle.getsockname()[1]
 
 
-def main():
+def main(finish_case="retry"):
+    SimulatedOllama.attempts = 0
+    SimulatedOllama.finish_case = finish_case
     runtime = http.server.ThreadingHTTPServer(("127.0.0.1", 0), SimulatedOllama)
     threading.Thread(target=runtime.serve_forever, daemon=True).start()
     runtime_origin = f"http://127.0.0.1:{runtime.server_port}"
@@ -92,12 +101,28 @@ def main():
                 cli("worker", "run", "--state-dir", state, "--coordinator", origin, "--ollama-url", runtime_origin,
                     "--token-file", token, "--stop-when-idle", "--idle-grace-seconds", "2")
                 status = json.loads(cli("status", *owner, submitted["batch_id"]).stdout)
-                assert status["counts"].get("succeeded") == 1, status
-                assert SimulatedOllama.attempts == 2, SimulatedOllama.attempts
-                exported = cli("export", *owner, submitted["batch_id"], "--require-success").stdout.splitlines()
+                success = finish_case in ("retry", "stop")
+                assert status["counts"].get("succeeded" if success else "failed") == 1, status
+                assert SimulatedOllama.attempts == (2 if finish_case == "retry" else 1), SimulatedOllama.attempts
+                exported = cli("export", *owner, submitted["batch_id"], *(["--require-success"] if success else [])).stdout.splitlines()
                 assert len(exported) == 1
-                assert json.loads(exported[0])["output"] == "fixture-output"
-                print("PASS: real worker retried a simulated Ollama 503 and accepted one result before idle exit.")
+                row = json.loads(exported[0])
+                assert row["output"] == ("fixture-output" if success else None), row
+                observations = list(state.glob("workers/*/generation-*.json"))
+                if finish_case == "model_changed":
+                    assert row["error"]["code"] == "model_changed", row
+                    assert not observations
+                else:
+                    assert len(observations) == 1
+                    observed = json.loads(observations[0].read_text())["result"]
+                    assert observed["output"] == "fixture-output"
+                    expected_reason = {"length": "length", "unknown": "future_reason", "empty": "", "missing": None}.get(finish_case, "stop")
+                    assert observed.get("finish_reason") == expected_reason, observed
+                    if not success:
+                        expected = {"length": "generation_length_limited", "unknown": "unknown_finish_reason",
+                                    "empty": "unknown_finish_reason", "missing": "missing_finish_reason", "unfinished": "incomplete_inference"}[finish_case]
+                        assert row["error"]["code"] == expected, row
+                print(f"PASS real worker {finish_case}: {'one accepted result' if success else 'terminal failure, no accepted output'}; observation/replay contract checked.")
             finally:
                 server.terminate()
                 try:
@@ -106,7 +131,12 @@ def main():
                     server.kill()
                     server.wait()
     runtime.shutdown()
+    runtime.server_close()
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--all-finish-cases", action="store_true")
+    args = parser.parse_args()
+    for case in (["retry", "stop", "length", "missing", "unknown", "empty", "unfinished", "model_changed"] if args.all_finish_cases else ["retry"]):
+        main(case)

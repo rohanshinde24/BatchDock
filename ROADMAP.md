@@ -1,6 +1,6 @@
 # Production roadmap
 
-**Planning only: do not start implementation, services, workloads or deployment until execution is explicitly resumed.** BatchDock is prioritized; GatePass work is deferred. All gates below remain unaccepted. These are proposed requirements, not delivered production capabilities.
+**P0 only: baseline/runtime probes and mandatory finish handling are implemented and locally verified. P1 and later work, second-Mac setup and deployment remain on hold.** BatchDock is prioritized; GatePass work is deferred. P0 evidence is in [docs/P0.md](docs/P0.md). P1–P6 remain unaccepted; later requirements are proposed, not delivered capabilities.
 
 Scope remains a small trusted team, one coordinator/local SQLite and enrolled Mac workers. Users select installed models; strict mode pins model digest, runtime version and generation settings. Whole prompts execute on individual workers. High availability, public workers, tensor parallelism and training remain out of scope.
 
@@ -59,6 +59,6 @@ Separate process-crash, consistent-backup and power-loss guarantees. Use a stopp
 
 Pilot onboarding targets ≤10 minutes from prerequisites-ready to first valid output, with installation/access provisioning and assistance recorded separately. Report all outcomes with explicit denominators. Small pilots do not establish 99.9% availability or success; illustrative resume numbers are not observed results.
 
-Historical MVP checks passed 16 Swift tests, real HTTP recovery and a transient-worker retry case. Local gemma2:2b inference and a 12-input/two-process emulation succeeded. Source review also identified the unresolved P2 gaps above. These passing cases do not establish general self-recovery, truncation safety, physical multi-Mac performance or production readiness. See [README validation](README.md#validation-and-reproduction).
+Historical MVP checks passed 16 Swift tests, real HTTP recovery and a transient-worker retry case. Local gemma2:2b inference and a 12-input/two-process emulation succeeded. P0 now decodes/persists stop/length/unknown outcomes and requests strict overflow controls for the tested runtime pair. Other reviewed P2 gaps remain unresolved. These passing cases do not establish general self-recovery, truncation safety, physical multi-Mac performance or production readiness. See [README validation](README.md#validation-and-reproduction).
 
 The earlier 20–40 focused-hour estimate describes a bounded technical beta, not this full production contract and pilot calendar. Re-estimate after P0 and P1. Hardware access and failure discoveries affect engineering effort; real reuse requires collaborator time. Keep private data/credentials out of public reports.

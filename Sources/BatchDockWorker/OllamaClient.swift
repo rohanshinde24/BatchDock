@@ -6,9 +6,40 @@ public struct OllamaSnapshot: Sendable {
   public let models: [ModelIdentity]
 }
 
-public struct InferenceResult: Sendable {
+public struct InferenceResult: Codable, Sendable {
   public let output: String
   public let metrics: [String: Double]
+  public let done: Bool
+  public let finishReason: String?
+
+  public func requireComplete() throws {
+    guard done else {
+      throw WorkerError("incomplete_inference", "Runtime generation did not finish.")
+    }
+    guard let finishReason else {
+      throw WorkerError("missing_finish_reason", "Runtime omitted its finish reason.")
+    }
+    switch finishReason {
+    case "stop": return
+    case "length":
+      throw WorkerError(
+        "generation_length_limited",
+        "Generation reached a limit; partial output is retained locally.")
+    default:
+      throw WorkerError("unknown_finish_reason", "Runtime returned an unsupported finish reason.")
+    }
+  }
+}
+
+struct GenerationObservation: Codable, Sendable {
+  let attemptId: String
+  let identity: AttemptIdentity
+  let configHash: String
+  let result: InferenceResult
+
+  func persist(to path: String) throws {
+    try LocalState.atomicWrite(CoreJSON.encoder().encode(self), to: path)
+  }
 }
 
 public struct OllamaClient: Sendable {
@@ -57,11 +88,14 @@ public struct OllamaClient: Sendable {
       let prompt: String
       let system: String
       let stream = false
+      let truncate = false
+      let shift = false
       let options: InferenceOptions
     }
     struct Response: Decodable, Sendable {
       let response: String
       let done: Bool
+      let doneReason: String?
       let totalDuration: Double?
       let loadDuration: Double?
       let promptEvalCount: Double?
@@ -75,8 +109,7 @@ public struct OllamaClient: Sendable {
     guard
       let response = try await client.request(
         "POST", "/api/generate", body: CoreJSON.encoder().encode(payload),
-        timeout: Double(lease.attemptLimitSeconds), maximumBytes: 512 * 1024, as: Response.self),
-      response.done
+        timeout: Double(lease.attemptLimitSeconds), maximumBytes: 512 * 1024, as: Response.self)
     else {
       throw WorkerError("incomplete_inference", "Ollama did not complete the response.")
     }
@@ -90,6 +123,8 @@ public struct OllamaClient: Sendable {
     metrics["prompt_tokens"] = response.promptEvalCount
     metrics["output_tokens"] = response.evalCount
     metrics["eval_duration_ns"] = response.evalDuration
-    return InferenceResult(output: response.response, metrics: metrics)
+    return InferenceResult(
+      output: response.response, metrics: metrics, done: response.done,
+      finishReason: response.doneReason)
   }
 }

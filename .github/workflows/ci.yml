@@ -25,5 +25,5 @@ jobs:
         run: swift test --parallel --jobs 3
       - name: Coordinator HTTP acceptance
         run: python3 scripts/acceptance.py
-      - name: Worker retries a transient inference failure
-        run: python3 scripts/worker-retry.py
+      - name: Worker finish-reason and transient-failure regressions
+        run: python3 scripts/worker-retry.py --all-finish-cases

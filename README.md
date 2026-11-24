@@ -75,10 +75,12 @@ Each worker has its own credential. Remote workers reach the loopback coordinato
 
 | Check | What actually passed |
 | --- | --- |
-| `swift test -j 4` | 16 tests covering ownership races, remaining lease on replay, stale results, restart fencing, cancellation, attempt budgets, authentication, strict input, export bounds and durable failure replay |
+| `swift test -j 4` | 20 tests covering finish-reason rejection, private partial-output observations, ownership races, remaining lease on replay, stale results, restart fencing, cancellation, attempt budgets, authentication, strict input, export bounds and durable failure replay |
 | `python3 scripts/acceptance.py` | Real coordinator over HTTP with synthetic protocol workers: competing claims, submission/completion replay conflicts, lease expiry, SIGKILL restart, durable output and complete ordered cancellation export |
-| `python3 scripts/worker-retry.py` | Actual CLI and worker against a simulated Ollama endpoint returning one HTTP 503; worker retries and exports one accepted result |
+| `python3 scripts/worker-retry.py --all-finish-cases` | Actual CLI/worker checks for 503 recovery, valid stop, length/missing/unknown/empty/unfinished rejection and model drift; rejected generations never become accepted output |
 | `sh scripts/smoke-ollama.sh gemma2:2b` | Actual local Ollama: three fixture prompts completed through submission, worker processing, successful status and ordered export |
+
+P0 adds a stop-only finish policy, private per-attempt outcome observations and strict truncate/shift controls verified on Ollama0.33.3 with gemma2:2b. See [P0 evidence and reproduction](docs/P0.md) for raw-contract observations, limits, current tests and fixture validation. P1 has not started.
 
 The real-model check ran locally with an installed `gemma2:2b`; it installs no models and requires a running coordinator. The HTTP workers and transient-failure endpoint are simulations, not inference benchmarks. CI repeats the unit, HTTP and transient-worker checks without requiring Ollama. [Verified implementation CI run](https://github.com/rohanshinde24/BatchDock/actions/runs/45174925672).
 
@@ -92,4 +94,4 @@ The real-model check ran locally with an installed `gemma2:2b`; it installs no m
 
 ## Production roadmap
 
-The next phase is planned, with implementation paused. See [production milestones and acceptance criteria](ROADMAP.md) for an early two-Mac feasibility test, execution/recovery fixes, layered fault validation, operability, optional resource controls and independent pilots. These are planned acceptance targets, not delivered production claims.
+P0 single-host runtime/finish-policy work is implemented and locally verified; P1 and later work remain paused. See [production milestones and acceptance criteria](ROADMAP.md) for an early two-Mac feasibility test, execution/recovery fixes, layered fault validation, operability, optional resource controls and independent pilots. These are planned acceptance targets, not delivered production claims.

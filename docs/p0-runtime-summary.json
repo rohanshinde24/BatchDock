@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "run_id": "runtime-contract-v1",
+  "source_revision": "48442db044efc273afc71edbdfdc9566d2b3bb4c",
+  "source_dirty": true,
+  "source_hashes": {
+    "Sources/BatchDockCore/Protocol.swift": "452c8c6b87c22789c75fb011d081a08929caaa9820c285c41447bb870e377839",
+    "Sources/BatchDockServer/Server.swift": "fd001a8e717bfa4935ac159d87c77d3ea812ebec74e12c3d1899a343a1872156",
+    "Sources/BatchDockStore/QueueStore.swift": "29073e167f3d7ad6799eeb5cce242afc2efc439211f9916e13ca364ffa6102fb",
+    "Sources/BatchDockWorker/APIClient.swift": "f1dd24624721a503305bcba97ad96f92f9ed55f269da6e8ce1e44738c0e39d53",
+    "Sources/BatchDockWorker/InputFiles.swift": "8aaea5fd531156601c5eb5f8ad2d08aee33dd92b4a0eb570de247e9d789bc69b",
+    "Sources/BatchDockWorker/LocalState.swift": "c5098cde7d3eb60d2c69165973a2c5ef1c6636aca5fd28fa7f81309115a2aad4",
+    "Sources/BatchDockWorker/OllamaClient.swift": "10422d353a5d792b84eacfc424b3c4109fc03a5461ec429ede368d639adbb70c",
+    "Sources/BatchDockWorker/WorkerRunner.swift": "12e0029e0b3d55f8f27ab6e6b83d047690dde39a78e7a31cbef425ea33404c1f",
+    "Sources/batchdock/BatchDockCommand.swift": "3eab77eda3ff8a89919cc2c8d7b7688e594cf548024ee68fd7b8de1d5aa0598e"
+  },
+  "probe_script_sha256": "950914b7ea1183f8d7806472787040d36d399e9ee213e380db224c9d27eb575a",
+  "lock_sha256": "2a5d214fcb97afdcd3b54c6cfcbaa505043c479ff32105738c3dd9f9f42047f0",
+  "swift": "swift-driver version: 1.127.14.1 Apple Swift version 6.2.1 (swiftlang-6.2.1.4.8 clang-1700.4.4.1)\nTarget: arm64-apple-macosx26.0",
+  "macos": "26.3.1",
+  "architecture": "arm64",
+  "hardware_model": "Mac15,12",
+  "ram_bytes": 17179869184,
+  "topology": "single Mac / one existing Ollama service; sequential P0 probes, no throughput comparison",
+  "unavailable": {
+    "transport_error": "URLError",
+    "elapsed_seconds": 7.846948999998858
+  },
+  "live_alias_mutation": "not performed: no installed model/tag is modified; identity drift is covered by simulated worker tests",
+  "runtime_version": "0.33.3",
+  "model": {
+    "name": "gemma2:2b",
+    "digest": "8ccf136fdd5298f3ffe2d69862750ea7fb56555fa4d5b18c04e3fa4d82ee09d7",
+    "size": 1629518495,
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "gemma2",
+      "families": [
+        "gemma2"
+      ],
+      "parameter_size": "2.6B",
+      "quantization_level": "Q4_0",
+      "context_length": 8192,
+      "embedding_length": 2304
+    }
+  },
+  "cases": {
+    "natural_stop": {
+      "request_sha256": "ee52330a7dc7d72bc8bb6f9d13d9ba516f06b861fc3016e9e73230b1a62f1395",
+      "http_status": 200,
+      "elapsed_seconds": 4.528079791998607,
+      "fixture_valid": true,
+      "response": {
+        "done": true,
+        "done_reason": "stop",
+        "response": "kettle \n",
+        "prompt_eval_count": 15,
+        "eval_count": 5
+      }
+    },
+    "output_limit": {
+      "request_sha256": "ff8ef3d918125ce4a334491afea708046fdfb3a295c0f8778604182438b7efab",
+      "http_status": 200,
+      "elapsed_seconds": 0.12795791700773407,
+      "response": {
+        "done": true,
+        "done_reason": "length",
+        "response": "1",
+        "prompt_eval_count": 20,
+        "eval_count": 1
+      }
+    },
+    "context_boundary": {
+      "request_sha256": "2c846f58cb8bd6cf16be5acff149474b22dc1d9b7ab7f9a8397321df6f47f04d",
+      "http_status": 200,
+      "elapsed_seconds": 3.0128188750095433,
+      "response": {
+        "done": true,
+        "done_reason": "length",
+        "response": "It seems like you're trying to",
+        "prompt_eval_count": 92,
+        "eval_count": 8
+      }
+    },
+    "oversized_default": {
+      "request_sha256": "bee34cc4cfeafb77ca7d930ff262457aba6c1b1e2561bf491b25cbc7c54f1861",
+      "http_status": 200,
+      "elapsed_seconds": 0.4078894999984186,
+      "response": {
+        "done": true,
+        "done_reason": "length",
+        "response": "It seems like you're trying to",
+        "prompt_eval_count": 67,
+        "eval_count": 8
+      }
+    },
+    "oversized_reject_requested": {
+      "request_sha256": "13fb88330cafbacfd35d80bd3babfa365c23cf9b8e340b3203adf0c9239974ca",
+      "http_status": 400,
+      "elapsed_seconds": 1.1164196669997182,
+      "response": {
+        "error": "{\"error\":{\"code\":400,\"message\":\"request (4512 tokens) exceeds the available context size (256 tokens), try increasing it\",\"type\":\"exceed_context_size_error\",\"n_prompt_tokens\":4512,\"n_ctx\":256}}"
+      }
+    },
+    "structured_output": {
+      "request_sha256": "13f19715e0260c41588462642bb3a88402581bd725cccc2b6cde0c30b0fb02eb",
+      "http_status": 200,
+      "elapsed_seconds": 1.6880057499947725,
+      "fixture_valid": true,
+      "response": {
+        "done": true,
+        "done_reason": "stop",
+        "response": "{\"product\": \"kettle\"}",
+        "prompt_eval_count": 20,
+        "eval_count": 8
+      }
+    }
+  },
+  "timing_interpretation": "single-host sequential runtime contract diagnostics only, not throughput/latency benchmarks"
+}

@@ -160,6 +160,13 @@ public struct WorkerRunner: Sendable {
         }
         return result
       }
+      // Retain the runtime outcome before rejecting incomplete generation or publishing success.
+      try GenerationObservation(
+        attemptId: lease.attemptId, identity: lease.identity,
+        configHash: lease.configHash, result: result
+      )
+      .persist(to: stateDirectory + "/generation-\(lease.attemptId).json")
+      try result.requireComplete()
       let completion = CompletionRequest(
         identity: lease.identity, output: result.output, outputHash: CoreJSON.hash(result.output),
         modelDigest: lease.manifest.model.digest, ollamaVersion: lease.manifest.model.ollamaVersion,
@@ -250,7 +257,11 @@ public struct WorkerRunner: Sendable {
     if let error = error as? WorkerError {
       return (
         error.code, error.message,
-        !["model_changed", "oversized_output", "oversized_response", "invalid_response"].contains(
+        !([
+          "model_changed", "oversized_output", "oversized_response", "invalid_response",
+          "incomplete_inference", "generation_length_limited", "missing_finish_reason",
+          "unknown_finish_reason",
+        ]).contains(
           error.code)
       )
     }
