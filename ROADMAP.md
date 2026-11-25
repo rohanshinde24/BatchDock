@@ -1,6 +1,6 @@
 # Production roadmap
 
-**P0 is implemented and verified. Single-host benchmark-harness preparation and isolated restricted SSH validation are authorized. Physical P1 remains pending real hardware; P2 and later implementation have not started.** BatchDock is prioritized; GatePass work is deferred. P0 evidence is in [docs/P0.md](docs/P0.md). P1–P6 remain unaccepted; later requirements are proposed, not delivered capabilities.
+**P0 is implemented and verified. Stronger synthetic data, controlled single-Mac baselines and external overhead profiling are authorized; prior restricted SSH checks remain available. Physical P1 remains pending real hardware; P2 and later implementation have not started.** BatchDock is prioritized; GatePass work is deferred. P0 evidence is in [docs/P0.md](docs/P0.md). P1–P6 remain unaccepted; later requirements are proposed, not delivered capabilities.
 
 Scope remains a small trusted team, one coordinator/local SQLite and enrolled Mac workers. Users select installed models; strict mode pins model digest, runtime version and generation settings. Whole prompts execute on individual workers. High availability, public workers, tensor parallelism and training remain out of scope.
 
@@ -19,6 +19,8 @@ Gate IDs are retained for reference; P5 is optional. The current work validates 
 | P6 — Pilot/release acceptance | Independent reuse and supported release | Two independent collaborators, two datasets, three completed batches and one repeat user. Record setup/help/rejection, validate supported extraction/output contracts and complete release smoke/installation checks. |
 
 Sequence: **P0 → P1 feasibility/decision → P2 fixes → P3 validation → P4 operability → P6 pilots**. P5 is optional after profiling. Finish-reason decoding/persistence and strict benchmark completion checks are mandatory before P1, with regression tests; this mandatory subset is implemented and regression-tested in P0. Finish reason alone does not establish full prompt processing or semantic correctness. A missing second Mac leaves P1 blocked; multiple processes on one Mac do not satisfy it.
+
+The [controlled single-Mac follow-up](docs/SINGLE-MAC-BASELINE.md) freezes a200-unique-record workload and model-resident1/2-slot comparisons, with separate startup probes and observer-calibrated external profiling. This does not close physical P1 or change P2 behavior.
 
 ## Feasibility hypotheses and transport
 

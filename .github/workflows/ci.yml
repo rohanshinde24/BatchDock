@@ -34,3 +34,10 @@ jobs:
           python3 scripts/benchmark-local.py --output-dir .batchdock/ci-emulation --records 200 --repetitions 1
           python3 scripts/verify-local-benchmark.py .batchdock/ci-emulation
           python3 scripts/test-verify-local-benchmark.py .batchdock/ci-emulation
+      - name: Controlled single-Mac contracts
+        run: python3 scripts/test-single-mac.py
+      - name: Controlled single-Mac harness (simulated inference)
+        run: |
+          python3 scripts/benchmark-single-mac.py --runtime fixture --repetitions 1 --output-dir .batchdock/ci-baseline
+          python3 scripts/verify-single-mac.py .batchdock/ci-baseline
+          python3 scripts/test-single-mac-artifacts.py .batchdock/ci-baseline
