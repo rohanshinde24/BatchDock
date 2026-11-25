@@ -50,7 +50,7 @@ Acceptance requires every ID exactly once in input order, successful state and t
 
 Elapsed time uses one controller's monotonic clock, from submit/dispatch through received, validated output. BatchDock includes worker startup and excludes idle-exit grace. Real mode does not unload models or control cold starts. These times are diagnostic, not a valid P1 overhead/scaling comparison. No speedup or go/narrow/stop result is calculated. Reports require `single_host_emulation`, one physical host, `p1_verdict: null` and `p1_thresholds_evaluated: false`.
 
-The separate verifier rechecks hashes, the complete configuration matrix, all outputs, accepted-attempt observations and worker participation against the coordinator database. It also checks recorded SSH restrictions and process cleanup. Keep the exact harness source and tested binary to verify an old report; rebuilding changes the binary hash. Hashes detect accidental artifact drift, not malicious evidence fabrication.
+The separate verifier rechecks hashes, the complete configuration matrix, all outputs, accepted-attempt observations and worker participation against the coordinator database. It also checks recorded SSH restrictions and process cleanup. The tested binary must match its recorded hash; rebuilding changes it. The verifier can recover exact source bytes from Git history and records the archived revisions used. Historical dirty-tree runs may reference a later publication of identical hashed bytes; their original base revision remains unchanged. Hashes detect accidental artifact drift, not malicious evidence fabrication.
 
 ## Restricted SSH
 
@@ -69,3 +69,5 @@ Raw plans, outputs, database, logs, worker credentials, keys and observations st
 Local validation passed 12 simulated-inference runs and 12 real-Ollama runs (4,800 exact checked outputs total), on Mac15,12 /16 GiB /macOS26.3.1. Real inference used Ollama0.33.3 and gemma2:2b digest `8ccf136fdd5298f3ffe2d69862750ea7fb56555fa4d5b18c04e3fa4d82ee09d7`. All three real two-worker runs accepted100 outputs on each worker. Independent artifact verification, four output-acceptance tests and five artifact-tamper rejection cases passed. Owned-process cleanup passed; existing Ollama remained running.
 
 See [local-emulation summary](local-emulation-summary.json) for measured validation evidence. These reports leave physical P1 pending and do not begin P2.
+
+The SSH checker accepts lowercase or mixed-case effective directive names (local OpenSSH10.2 versus hosted10.5), while retaining exact required values/destinations and all eight negative tests. This is a dump-format compatibility correction, not a transport-policy change. Upstream [OpenSSH configuration dumping](https://github.com/openssh/openssh-portable/blob/master/servconf.c) uses canonical mixed-case keywords.

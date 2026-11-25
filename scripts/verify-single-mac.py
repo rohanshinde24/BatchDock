@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 import sqlite3
 from benchmark_dataset import load, oracle
+from frozen_sources import frozen_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -26,8 +27,10 @@ def verify(root):
         raise ValueError('Incomplete experiment or cleanup')
     if sha(root / 'plan.json') != report['plan_sha256']:
         raise ValueError('Frozen plan changed')
-    if any(sha(ROOT / name) != value for name, value in plan['hashes'].items()) or sha(ROOT / '.build/debug/batchdock') != plan['binary_sha256']:
-        raise ValueError('Frozen source/workload/binary changed')
+    archived = frozen_sources(ROOT, plan['hashes'], plan['source_revision'],
+                              allow_published=plan['source_dirty'])
+    if sha(ROOT / '.build/debug/batchdock') != plan['binary_sha256']:
+        raise ValueError('Frozen binary changed')
     records = load(ROOT / 'Fixtures/benchmark-v2.jsonl')
     if json.loads((root / 'dataset.json').read_text()) != records:
         raise ValueError('Copied dataset changed')
@@ -99,7 +102,8 @@ def verify(root):
     return {'label': 'single_host_emulation', 'artifacts_verified': True,
             'runs': len(report['runs']), 'checked_outputs': sum(r['records'] for r in report['runs']),
             'p1_status': 'pending_real_hardware', 'p1_verdict': None,
-            'plan_sha256': report['plan_sha256'], 'verifier_sha256': sha(Path(__file__))}
+            'plan_sha256': report['plan_sha256'], 'verifier_sha256': sha(Path(__file__)),
+            'archived_sources': archived}
 
 
 if __name__ == '__main__':

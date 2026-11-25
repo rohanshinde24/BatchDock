@@ -12,5 +12,7 @@ fields = {'allowtcpforwarding', 'allowstreamlocalforwarding', 'maxsessions', 'pe
           'permitlisten', 'allowagentforwarding', 'x11forwarding', 'passwordauthentication',
           'permituserrc', 'permitopen', 'kbdinteractiveauthentication', 'usepam', 'permittunnel'}
 for line in policy.splitlines():
-    if line.split()[0] in fields:
+    if line.split()[0].casefold() in fields:
         print(line)
+print('policy_line_count:', len(policy.splitlines()))
+print('policy_field_names:', ' '.join(line.split()[0] for line in policy.splitlines() if line.split()))

@@ -28,6 +28,10 @@ jobs:
         run: python3 scripts/acceptance.py
       - name: Worker finish-reason and transient-failure regressions
         run: python3 scripts/worker-retry.py --all-finish-cases
+      - name: Effective SSH policy and frozen source regressions
+        run: |
+          python3 scripts/test-ssh-policy.py
+          python3 scripts/test-frozen-sources.py
       - name: Local benchmark output acceptance
         run: python3 scripts/test-benchmark-local.py
       - name: Single-host SSH harness (simulated inference)

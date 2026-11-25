@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+from frozen_sources import frozen_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = {'direct_one_slot', 'direct_two_slots', 'batchdock_one_worker', 'batchdock_two_workers_ssh'}
@@ -45,8 +46,11 @@ def verify(root):
         raise ValueError('Frozen expected answers changed')
     if json.loads((root / 'manifest.json').read_text()) != plan['model']:
         raise ValueError('Frozen manifest changed')
-    if sha((ROOT / 'scripts/benchmark-local.py').read_bytes()) != plan['harness_sha256']:
-        raise ValueError('Use the exact harness source captured by the plan')
+    expected_sources = {'scripts/benchmark-local.py': plan['harness_sha256']}
+    if 'ssh_policy_sha256' in plan:
+        expected_sources['scripts/ssh_policy.py'] = plan['ssh_policy_sha256']
+    archived = frozen_sources(ROOT, expected_sources, plan['source_revision'],
+                              allow_published=plan['source_dirty'])
     if sha((ROOT / '.build/debug/batchdock').read_bytes()) != plan['binary_sha256']:
         raise ValueError('Use the exact tested binary')
     if sha((ROOT / 'Package.resolved').read_bytes()) != plan['lock_sha256']:
@@ -89,7 +93,7 @@ def verify(root):
     return {'label': 'single_host_emulation', 'artifacts_verified': True, 'runs': len(schedule),
             'checked_outputs': len(schedule) * plan['records'], 'p1_status': 'pending_real_hardware',
             'p1_verdict': None, 'plan_sha256': sha(plan_bytes),
-            'verifier_sha256': sha(Path(__file__).read_bytes())}
+            'verifier_sha256': sha(Path(__file__).read_bytes()), 'archived_sources': archived}
 
 
 if __name__ == '__main__':

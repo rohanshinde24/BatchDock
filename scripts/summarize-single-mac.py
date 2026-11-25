@@ -56,9 +56,12 @@ def summarize(root):
                         'median_valid_inputs_per_second': statistics.median(r['valid_outputs'] / r['elapsed_seconds'] for r in runs),
                         'runtime_metrics_by_repetition': [metrics(json.loads((root / r['folder'] / 'results.json').read_text()), engine) for r in runs],
                         'worker_accepted_counts': [sorted(r['worker_participation'].values()) if r['worker_participation'] else None for r in runs]})
-    free, thermal_available = [], True
+    host_note = root / 'host-context-observation.json'
+    context = json.loads(host_note.read_text()) if host_note.exists() else {}
+    free, loads, thermal_available = [], [], True
     for run in report['runs']:
         for snapshot in (run['host_before'], run['host_after']):
+            loads.append(snapshot['load_average'][0])
             match = re.search(r'System-wide memory free percentage: (\d+)%', snapshot['memory']['text'])
             if match:
                 free.append(int(match[1]))
@@ -73,7 +76,9 @@ def summarize(root):
             'verification': verified, 'configurations': configs, 'profiles': profiles,
             'observer_pairs': perturbation, 'owned_processes_stopped': report['owned_processes_stopped'],
             'model_residency_restored': report['model_residency_restored'],
-            'host_context': {'system_memory_free_percentage_snapshot_range': [min(free), max(free)] if free else None,
+            'host_context': {'system_load_average_1min_snapshot_range': [min(loads), max(loads)],
+                             'background_cpu_activity_observed': context.get('background_cpu_activity_observed'),
+                             'system_memory_free_percentage_snapshot_range': [min(free), max(free)] if free else None,
                              'thermal_snapshot_commands_succeeded': thermal_available,
                              'continuous_gpu_thermal_or_peak_memory_measurement': False},
             'limitations': ['Synthetic extraction corpus; not a customer/model-quality benchmark.',

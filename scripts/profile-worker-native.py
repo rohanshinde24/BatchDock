@@ -30,6 +30,7 @@ def main():
     plan = {'label': 'single_host_emulation', 'purpose': 'separate_native_wall_stack_diagnostic',
             'physical_hosts': 1, 'p1_status': 'pending_real_hardware', 'p1_verdict': None,
             'p2_started': False, 'records': 60, 'sample_duration_seconds': 8, 'sample_interval_ms': 10,
+            'sample_targets': ['worker', 'coordinator'],
             'reference_plan_sha256': baseline.sha(args.reference_plan),
             'script_sha256': baseline.sha(Path(__file__)), 'binary_sha256': reference['binary_sha256'],
             'workload_sha256': baseline.sha(root / 'inputs.jsonl'), 'manifest': reference['manifest']}
@@ -76,10 +77,14 @@ def main():
             if worker.poll() is not None or time.monotonic() > deadline:
                 raise RuntimeError('Worker did not produce first observation')
             time.sleep(.05)
-        sampled = subprocess.run(['/usr/bin/sample', str(worker.pid), '8', '10', '-mayDie', '-file', str(root / 'worker.sample.txt')],
-                                 capture_output=True, text=True, timeout=45)
-        (root / 'sample-command.log').write_text(sampled.stdout + sampled.stderr)
-        result['sample_returncode'] = sampled.returncode
+        samples = {}
+        for name, process in [('worker', worker), ('coordinator', coordinator)]:
+            sampled = subprocess.run(['/usr/bin/sample', str(process.pid), '8', '10', '-mayDie', '-file', str(root / (name + '.sample.txt'))],
+                                     capture_output=True, text=True, timeout=45)
+            (root / (name + '-sample-command.log')).write_text(sampled.stdout + sampled.stderr)
+            samples[name] = {'returncode': sampled.returncode,
+                             'available': sampled.returncode == 0 and (root / (name + '.sample.txt')).exists()}
+        result['samples'] = samples
         owner = (state / 'owner-token').read_text().strip()
         while baseline.request(coordinator_origin, f'/v1/batches/{batch}', token=owner)['state'] == 'running':
             if time.monotonic() > deadline:
@@ -90,7 +95,7 @@ def main():
         baseline.observations_valid(root, rows, 1)
         baseline.save(root / 'results.json', rows)
         result['validated_outputs'] = len(rows)
-        result['sample_available'] = sampled.returncode == 0 and (root / 'worker.sample.txt').exists()
+        result['sample_available'] = all(s['available'] for s in samples.values())
         result['interpretation'] = 'Wall-stack samples can include blocked threads; not CPU percentages or causal disk/DB timing. Separate from all baseline/profile calibration runs.'
     finally:
         processes.close()

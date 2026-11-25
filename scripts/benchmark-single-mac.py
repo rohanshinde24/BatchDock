@@ -248,7 +248,8 @@ def main():
                             'slots': 1, 'repetition': rep, 'observer': observed, 'records': 60} for observed in pair)
         schedule += profile
         sources = ['scripts/benchmark-single-mac.py', 'scripts/benchmark_dataset.py',
-                   'scripts/benchmark-local.py', 'scripts/verify-single-mac.py', 'scripts/test-single-mac.py',
+                   'scripts/benchmark-local.py', 'scripts/ssh_policy.py', 'scripts/frozen_sources.py',
+                   'scripts/verify-single-mac.py', 'scripts/test-single-mac.py',
                    'Fixtures/benchmark-v2.jsonl', 'Package.resolved']
         plan = {'label': LABEL, 'experiment': report['experiment'], 'physical_hosts': 1,
                 'p1_status': report['p1_status'], 'p1_verdict': None, 'p1_thresholds_evaluated': False,

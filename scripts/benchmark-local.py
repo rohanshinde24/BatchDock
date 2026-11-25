@@ -22,6 +22,7 @@ import threading
 import time
 import uuid
 from urllib.request import Request, urlopen
+from ssh_policy import require_restricted
 
 ROOT = Path(__file__).resolve().parents[1]
 BINARY = ROOT / '.build/debug/batchdock'
@@ -143,11 +144,7 @@ UseDNS no
     (keys / 'sshd_config').write_text(config)
     (keys / 'sshd_config').chmod(0o600)
     effective = subprocess.check_output(['/usr/sbin/sshd', '-T', '-f', str(keys / 'sshd_config')], text=True)
-    required = ['allowtcpforwarding local', 'allowstreamlocalforwarding no', 'maxsessions 0',
-                'permittty no', 'permitlisten none', 'allowagentforwarding no', 'x11forwarding no',
-                'passwordauthentication no', 'permituserrc no', f'permitopen 127.0.0.1:{coordinator_port}']
-    if not all(line in effective.splitlines() for line in required):
-        raise RuntimeError('Effective SSH policy does not match restrictions')
+    require_restricted(effective, coordinator_port)
     (keys / 'effective-config.txt').write_text(effective)
     daemon = processes.start(['/usr/sbin/sshd', '-D', '-e', '-f', keys / 'sshd_config'], 'sshd')
     # Trust is bootstrapped from our generated host key, never blind keyscan acceptance.
@@ -286,7 +283,9 @@ def main():
                 'repetitions': args.repetitions, 'schedule_seed': seed, 'schedule': schedule,
                 'source_revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
                 'source_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()),
-                'harness_sha256': sha(Path(__file__).read_bytes()), 'binary_sha256': sha(BINARY.read_bytes()),
+                'harness_sha256': sha(Path(__file__).read_bytes()),
+                'ssh_policy_sha256': sha((ROOT / 'scripts/ssh_policy.py').read_bytes()),
+                'binary_sha256': sha(BINARY.read_bytes()),
                 'physical_p1_criteria': {'script_capacity_fraction': .8, 'max_batchdock_makespan_ratio': 1.1,
                                          'evaluated_here': False},
                 'timing': 'single-controller monotonic submit/dispatch to complete validated results; BatchDock worker startup included, idle grace excluded',
