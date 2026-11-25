@@ -1,0 +1,37 @@
+{
+  "label": "single_host_emulation",
+  "purpose": "separate_native_wall_stack_diagnostic",
+  "physical_hosts": 1,
+  "p1_status": "pending_real_hardware",
+  "p1_verdict": null,
+  "p2_started": false,
+  "validated_outputs": 60,
+  "validation_kind": "Committed diagnostic script exact-output and accepted-observation checks",
+  "samples": {
+    "coordinator": {
+      "available": true,
+      "returncode": 0
+    },
+    "worker": {
+      "available": true,
+      "returncode": 0
+    }
+  },
+  "sample_duration_seconds_per_process": 8,
+  "sample_interval_ms": 10,
+  "script_sha256": "9fbbc4478e57dd8770fb6ca3ef2d4407a600698b111e4d7793ba3d7d20b2ba25",
+  "reference_plan_sha256": "b3fcbde1d29fffeb3cdebd7360e4caad59dbddb0f981d9613916c199e12f9008",
+  "binary_sha256": "f42eef2e8aa8893ba8170c2d0946d015b1579350397a5833d8cda7e4ed2f488b",
+  "workload_sha256": "6714ea663ac0ae4aaa54a8325d443cd0b78547129fae773026a3496ff4657ad9",
+  "sample_sha256": {
+    "worker": "b55265e60723d224c655aa473b868c5c905d898f42c76e6efe04301305074704",
+    "coordinator": "97b0ade45ca7a7d2cdda0dbaac804e74d29f3889ca3150697e5faf96f3843144"
+  },
+  "owned_processes_stopped": true,
+  "model_residency_restored": true,
+  "qualitative_observations": [
+    "Worker CFNetwork/platform waits and occasional LocalState.atomicWrite publication path.",
+    "Coordinator event-loop/kqueue waits."
+  ],
+  "interpretation": "Wall-stack samples include blocked threads. No CPU percentage, disk/SQLite bottleneck or causal time share is established. Excluded from baseline/calibration results."
+}

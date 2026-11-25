@@ -1,0 +1,1323 @@
+{
+  "label": "single_host_emulation",
+  "experiment": "controlled_single_mac_v2",
+  "physical_hosts": 1,
+  "p1_status": "pending_real_hardware",
+  "p1_verdict": null,
+  "p1_thresholds_evaluated": false,
+  "p2_started": false,
+  "runtime_kind": "ollama",
+  "source_revision": "3bb6b86f66f100778c06e7b604e392dbe53a17ad",
+  "source_dirty": false,
+  "summary_generator_sha256": "db1f6cd43154753c18fde214c1f6fd3248616aff5cf8633c1ef741cd549238e7",
+  "hashes": {
+    "Fixtures/benchmark-v2.jsonl": "e46086b0d4967cdce665a6cec07658db26669d61eee59e5d302deb5e1a05ff47",
+    "Package.resolved": "2a5d214fcb97afdcd3b54c6cfcbaa505043c479ff32105738c3dd9f9f42047f0",
+    "scripts/benchmark-local.py": "8661bea3005a52e895dadf34d912212ce6b1198955d8cbc9306664720ddc2246",
+    "scripts/benchmark-single-mac.py": "667b43b53a5d65207739015bfbbb7753da68c1edeb17d07ecf2548453241d774",
+    "scripts/benchmark_dataset.py": "15e03a763e6c7b0ffbab63c5355bcf8a820970f5672baad24ceb98febfa35940",
+    "scripts/test-single-mac.py": "107c0bca27462388919b3b05c3cccb3c58486b02bceb7d4fcb79e5afc91edb7a",
+    "scripts/verify-single-mac.py": "a5b0124d2ddc72f9ffe186f2f38200b226abda13bd9cb0ff6c2747eb63563c24"
+  },
+  "binary_sha256": "f42eef2e8aa8893ba8170c2d0946d015b1579350397a5833d8cda7e4ed2f488b",
+  "hardware": {
+    "macos": "26.3.1",
+    "model": "Mac15,12",
+    "ram_bytes": 17179869184
+  },
+  "manifest": {
+    "attempt_limit_seconds": 600,
+    "generation": {
+      "format": "text",
+      "options": {
+        "num_ctx": 4096,
+        "num_predict": 32,
+        "seed": 42,
+        "temperature": 0
+      },
+      "system": "Answer concisely."
+    },
+    "model": {
+      "digest": "8ccf136fdd5298f3ffe2d69862750ea7fb56555fa4d5b18c04e3fa4d82ee09d7",
+      "ollama_version": "0.33.3",
+      "tag": "gemma2:2b"
+    },
+    "protocol_version": 1
+  },
+  "verification": {
+    "label": "single_host_emulation",
+    "artifacts_verified": true,
+    "runs": 30,
+    "checked_outputs": 2904,
+    "p1_status": "pending_real_hardware",
+    "p1_verdict": null,
+    "plan_sha256": "b3fcbde1d29fffeb3cdebd7360e4caad59dbddb0f981d9613916c199e12f9008",
+    "verifier_sha256": "8c4852812514b0118a5e8bc289227cbbb62e244f853a73137941ff710bd23018",
+    "archived_sources": [
+      {
+        "path": "scripts/benchmark-local.py",
+        "revision": "3bb6b86f66f100778c06e7b604e392dbe53a17ad"
+      },
+      {
+        "path": "scripts/benchmark-single-mac.py",
+        "revision": "3bb6b86f66f100778c06e7b604e392dbe53a17ad"
+      },
+      {
+        "path": "scripts/verify-single-mac.py",
+        "revision": "3bb6b86f66f100778c06e7b604e392dbe53a17ad"
+      }
+    ]
+  },
+  "configurations": [
+    {
+      "phase": "baseline",
+      "engine": "batchdock",
+      "slots": 1,
+      "regime": "model_resident",
+      "observer": false,
+      "records_per_run": 200,
+      "run_seconds": [
+        172.37012862498523,
+        261.7604064999905,
+        223.2132865829917
+      ],
+      "median_seconds": 223.2132865829917,
+      "min_seconds": 172.37012862498523,
+      "max_seconds": 261.7604064999905,
+      "median_valid_inputs_per_second": 0.8960040106108965,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 163.823526417,
+            "median": 0.7225535415,
+            "max": 1.705706916
+          },
+          "load_duration_seconds": {
+            "sum": 0.353107785,
+            "median": 0.0014136455,
+            "max": 0.012692708
+          },
+          "eval_duration_seconds": {
+            "sum": 44.744149997,
+            "median": 0.2125515,
+            "max": 0.429228
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 250.282368206,
+            "median": 1.030567062,
+            "max": 3.252291417
+          },
+          "load_duration_seconds": {
+            "sum": 0.461631373,
+            "median": 0.0016533125,
+            "max": 0.021340792
+          },
+          "eval_duration_seconds": {
+            "sum": 53.095750998,
+            "median": 0.2496225,
+            "max": 0.768939
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 217.394788409,
+            "median": 0.9240581045,
+            "max": 2.352260875
+          },
+          "load_duration_seconds": {
+            "sum": 0.349013997,
+            "median": 0.001502875,
+            "max": 0.010001291
+          },
+          "eval_duration_seconds": {
+            "sum": 43.226479,
+            "median": 0.207088,
+            "max": 0.425527
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          200
+        ],
+        [
+          200
+        ],
+        [
+          200
+        ]
+      ]
+    },
+    {
+      "phase": "baseline",
+      "engine": "direct",
+      "slots": 2,
+      "regime": "model_resident",
+      "observer": false,
+      "records_per_run": 200,
+      "run_seconds": [
+        189.21558895800263,
+        206.53712354198797,
+        248.72887854199507
+      ],
+      "median_seconds": 206.53712354198797,
+      "min_seconds": 189.21558895800263,
+      "max_seconds": 248.72887854199507,
+      "median_valid_inputs_per_second": 0.9683489174736231,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 375.629145245,
+            "median": 1.828185833,
+            "max": 3.761998334
+          },
+          "load_duration_seconds": {
+            "sum": 0.639118746,
+            "median": 0.002035917,
+            "max": 0.026591125
+          },
+          "eval_duration_seconds": {
+            "sum": 46.359468999,
+            "median": 0.2180035,
+            "max": 0.46835
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 408.694859577,
+            "median": 2.005179063,
+            "max": 4.007887666
+          },
+          "load_duration_seconds": {
+            "sum": 0.841111503,
+            "median": 0.0020249585,
+            "max": 0.118037208
+          },
+          "eval_duration_seconds": {
+            "sum": 47.847239998,
+            "median": 0.212612,
+            "max": 0.533063999
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 492.251647623,
+            "median": 2.507926625,
+            "max": 4.738892625
+          },
+          "load_duration_seconds": {
+            "sum": 1.392128207,
+            "median": 0.0038495005,
+            "max": 0.062006792
+          },
+          "eval_duration_seconds": {
+            "sum": 60.995847992,
+            "median": 0.2763675,
+            "max": 0.795731
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "phase": "baseline",
+      "engine": "batchdock",
+      "slots": 2,
+      "regime": "model_resident",
+      "observer": false,
+      "records_per_run": 200,
+      "run_seconds": [
+        215.64941474999068,
+        254.3900576250162,
+        248.1798794589995
+      ],
+      "median_seconds": 248.1798794589995,
+      "min_seconds": 215.64941474999068,
+      "max_seconds": 254.3900576250162,
+      "median_valid_inputs_per_second": 0.8058671010557927,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 418.137437578,
+            "median": 2.1168153125,
+            "max": 4.080208666
+          },
+          "load_duration_seconds": {
+            "sum": 0.414892661,
+            "median": 0.001369167,
+            "max": 0.023178916
+          },
+          "eval_duration_seconds": {
+            "sum": 47.117441997,
+            "median": 0.2188045,
+            "max": 0.725634
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 490.783489618,
+            "median": 2.4804403125,
+            "max": 4.7855085
+          },
+          "load_duration_seconds": {
+            "sum": 0.748597284,
+            "median": 0.0017329165,
+            "max": 0.0663845
+          },
+          "eval_duration_seconds": {
+            "sum": 55.939046996,
+            "median": 0.2488835,
+            "max": 1.229527
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 483.317359382,
+            "median": 2.4524275415,
+            "max": 4.382062458
+          },
+          "load_duration_seconds": {
+            "sum": 0.485297336,
+            "median": 0.001667146,
+            "max": 0.019164083
+          },
+          "eval_duration_seconds": {
+            "sum": 52.272387996,
+            "median": 0.2453435,
+            "max": 0.677597
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          100
+        ]
+      ]
+    },
+    {
+      "phase": "baseline",
+      "engine": "direct",
+      "slots": 1,
+      "regime": "model_resident",
+      "observer": false,
+      "records_per_run": 200,
+      "run_seconds": [
+        220.1088521660131,
+        173.5159539580054,
+        220.5275548339996
+      ],
+      "median_seconds": 220.1088521660131,
+      "min_seconds": 173.5159539580054,
+      "max_seconds": 220.5275548339996,
+      "median_valid_inputs_per_second": 0.9086413291963089,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 215.009796344,
+            "median": 0.9591073125,
+            "max": 4.151685125
+          },
+          "load_duration_seconds": {
+            "sum": 0.576303757,
+            "median": 0.001861167,
+            "max": 0.041097333
+          },
+          "eval_duration_seconds": {
+            "sum": 54.369020999,
+            "median": 0.237571,
+            "max": 3.515272
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 171.840814877,
+            "median": 0.7299025835,
+            "max": 1.735417542
+          },
+          "load_duration_seconds": {
+            "sum": 0.488029336,
+            "median": 0.0015619165,
+            "max": 0.035682375
+          },
+          "eval_duration_seconds": {
+            "sum": 45.852319997,
+            "median": 0.2236335,
+            "max": 0.37556
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 219.769524666,
+            "median": 0.9629654585,
+            "max": 2.756331583
+          },
+          "load_duration_seconds": {
+            "sum": 0.33365766,
+            "median": 0.001354146,
+            "max": 0.009211167
+          },
+          "eval_duration_seconds": {
+            "sum": 42.562357998,
+            "median": 0.206316,
+            "max": 0.29018
+          },
+          "prompt_eval_count": {
+            "sum": 58752.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 2000.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "phase": "cold_start",
+      "engine": "batchdock",
+      "slots": 1,
+      "regime": "model_unloaded",
+      "observer": false,
+      "records_per_run": 12,
+      "run_seconds": [
+        11.22112429200206,
+        10.366156709002098,
+        9.028636000002734
+      ],
+      "median_seconds": 10.366156709002098,
+      "min_seconds": 9.028636000002734,
+      "max_seconds": 11.22112429200206,
+      "median_valid_inputs_per_second": 1.1576132154725245,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 10.561064252,
+            "median": 0.735210396,
+            "max": 2.119387667
+          },
+          "load_duration_seconds": {
+            "sum": 1.442009832,
+            "median": 0.001750771,
+            "max": 1.420499
+          },
+          "eval_duration_seconds": {
+            "sum": 3.080856999,
+            "median": 0.254008,
+            "max": 0.292022
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 9.79258725,
+            "median": 0.687248792,
+            "max": 1.465496792
+          },
+          "load_duration_seconds": {
+            "sum": 0.865181083,
+            "median": 0.0012702915,
+            "max": 0.844420375
+          },
+          "eval_duration_seconds": {
+            "sum": 2.439058999,
+            "median": 0.1980735,
+            "max": 0.264000999
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 8.652643623,
+            "median": 0.6259252295,
+            "max": 1.462072917
+          },
+          "load_duration_seconds": {
+            "sum": 0.847982289,
+            "median": 0.0015189165,
+            "max": 0.833069458
+          },
+          "eval_duration_seconds": {
+            "sum": 2.369391,
+            "median": 0.187632,
+            "max": 0.291972
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          12
+        ],
+        [
+          12
+        ],
+        [
+          12
+        ]
+      ]
+    },
+    {
+      "phase": "cold_start",
+      "engine": "direct",
+      "slots": 2,
+      "regime": "model_unloaded",
+      "observer": false,
+      "records_per_run": 12,
+      "run_seconds": [
+        11.433991790981963,
+        13.071820290992036,
+        9.837587582995184
+      ],
+      "median_seconds": 11.433991790981963,
+      "min_seconds": 9.837587582995184,
+      "max_seconds": 13.071820290992036,
+      "median_valid_inputs_per_second": 1.0495022402818628,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 22.263883291,
+            "median": 1.671120792,
+            "max": 3.408345583
+          },
+          "load_duration_seconds": {
+            "sum": 2.227694999,
+            "median": 0.0017703955,
+            "max": 1.105312208
+          },
+          "eval_duration_seconds": {
+            "sum": 2.535682,
+            "median": 0.2091945,
+            "max": 0.234244
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 25.307882166,
+            "median": 2.088679375,
+            "max": 2.976438917
+          },
+          "load_duration_seconds": {
+            "sum": 3.436416252,
+            "median": 0.0015144585,
+            "max": 1.705814125
+          },
+          "eval_duration_seconds": {
+            "sum": 3.294233999,
+            "median": 0.236576,
+            "max": 0.728364
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 19.105292207,
+            "median": 1.3730383955,
+            "max": 2.477680083
+          },
+          "load_duration_seconds": {
+            "sum": 1.677742916,
+            "median": 0.0014668955,
+            "max": 0.831756584
+          },
+          "eval_duration_seconds": {
+            "sum": 2.363827,
+            "median": 0.193593,
+            "max": 0.230009
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "phase": "cold_start",
+      "engine": "direct",
+      "slots": 1,
+      "regime": "model_unloaded",
+      "observer": false,
+      "records_per_run": 12,
+      "run_seconds": [
+        13.859528458007844,
+        9.769741625001188,
+        12.192420667008264
+      ],
+      "median_seconds": 12.192420667008264,
+      "min_seconds": 9.769741625001188,
+      "max_seconds": 13.859528458007844,
+      "median_valid_inputs_per_second": 0.9842180095107004,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 13.805504372,
+            "median": 1.001617354,
+            "max": 2.852639125
+          },
+          "load_duration_seconds": {
+            "sum": 0.865563247,
+            "median": 0.001470687,
+            "max": 0.826183041
+          },
+          "eval_duration_seconds": {
+            "sum": 3.554836,
+            "median": 0.235713,
+            "max": 0.585431
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 9.725900419,
+            "median": 0.6642622505,
+            "max": 1.458806083
+          },
+          "load_duration_seconds": {
+            "sum": 0.858627334,
+            "median": 0.001616813,
+            "max": 0.824646458
+          },
+          "eval_duration_seconds": {
+            "sum": 2.524764,
+            "median": 0.206253,
+            "max": 0.243178
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 12.102880499,
+            "median": 0.9308335205,
+            "max": 1.62394475
+          },
+          "load_duration_seconds": {
+            "sum": 0.853302249,
+            "median": 0.0018099785,
+            "max": 0.825590375
+          },
+          "eval_duration_seconds": {
+            "sum": 3.14784,
+            "median": 0.271995,
+            "max": 0.32511
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "phase": "cold_start",
+      "engine": "batchdock",
+      "slots": 2,
+      "regime": "model_unloaded",
+      "observer": false,
+      "records_per_run": 12,
+      "run_seconds": [
+        12.84307400000398,
+        15.240530625014799,
+        12.18221016699681
+      ],
+      "median_seconds": 12.84307400000398,
+      "min_seconds": 12.18221016699681,
+      "max_seconds": 15.240530625014799,
+      "median_valid_inputs_per_second": 0.9343557469182441,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 24.241647708,
+            "median": 1.6335518125,
+            "max": 4.53586375
+          },
+          "load_duration_seconds": {
+            "sum": 1.649342372,
+            "median": 0.0016930205,
+            "max": 0.81682775
+          },
+          "eval_duration_seconds": {
+            "sum": 2.760103,
+            "median": 0.224215,
+            "max": 0.265588
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 28.736107792,
+            "median": 1.992063271,
+            "max": 5.251799
+          },
+          "load_duration_seconds": {
+            "sum": 1.662788875,
+            "median": 0.001370854,
+            "max": 0.8234435
+          },
+          "eval_duration_seconds": {
+            "sum": 3.37512,
+            "median": 0.26112,
+            "max": 0.419729
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 22.49497075,
+            "median": 1.7061808755,
+            "max": 3.3751195
+          },
+          "load_duration_seconds": {
+            "sum": 1.669280415,
+            "median": 0.0012999795,
+            "max": 0.826472708
+          },
+          "eval_duration_seconds": {
+            "sum": 3.344312,
+            "median": 0.214718,
+            "max": 0.849171
+          },
+          "prompt_eval_count": {
+            "sum": 2894.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 120.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ]
+    },
+    {
+      "phase": "profile",
+      "engine": "batchdock",
+      "slots": 1,
+      "regime": "model_resident",
+      "observer": true,
+      "records_per_run": 60,
+      "run_seconds": [
+        74.51855754197459,
+        73.65697633297532,
+        65.21344366701669
+      ],
+      "median_seconds": 73.65697633297532,
+      "min_seconds": 65.21344366701669,
+      "max_seconds": 74.51855754197459,
+      "median_valid_inputs_per_second": 0.8145867911922247,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 70.465276546,
+            "median": 1.0299224375,
+            "max": 3.187354875
+          },
+          "load_duration_seconds": {
+            "sum": 0.146496338,
+            "median": 0.0016860835,
+            "max": 0.023931333
+          },
+          "eval_duration_seconds": {
+            "sum": 16.568415999,
+            "median": 0.2452655,
+            "max": 0.75845
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 69.928289871,
+            "median": 1.009632875,
+            "max": 2.543869291
+          },
+          "load_duration_seconds": {
+            "sum": 0.196328539,
+            "median": 0.001756604,
+            "max": 0.062381708
+          },
+          "eval_duration_seconds": {
+            "sum": 17.096683999,
+            "median": 0.2821175,
+            "max": 0.434643
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 62.918751665,
+            "median": 0.952431021,
+            "max": 2.563380458
+          },
+          "load_duration_seconds": {
+            "sum": 0.088598833,
+            "median": 0.001431542,
+            "max": 0.004532125
+          },
+          "eval_duration_seconds": {
+            "sum": 12.602317999,
+            "median": 0.2074325,
+            "max": 0.283023
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          60
+        ],
+        [
+          60
+        ],
+        [
+          60
+        ]
+      ]
+    },
+    {
+      "phase": "profile",
+      "engine": "batchdock",
+      "slots": 1,
+      "regime": "model_resident",
+      "observer": false,
+      "records_per_run": 60,
+      "run_seconds": [
+        78.70436341600725,
+        76.91733908298193,
+        71.96022216699203
+      ],
+      "median_seconds": 76.91733908298193,
+      "min_seconds": 71.96022216699203,
+      "max_seconds": 78.70436341600725,
+      "median_valid_inputs_per_second": 0.7800581860387718,
+      "runtime_metrics_by_repetition": [
+        {
+          "total_duration_seconds": {
+            "sum": 74.435175087,
+            "median": 1.0927500625,
+            "max": 2.841592416
+          },
+          "load_duration_seconds": {
+            "sum": 0.192756291,
+            "median": 0.002035979,
+            "max": 0.026673417
+          },
+          "eval_duration_seconds": {
+            "sum": 16.979711998,
+            "median": 0.2619859995,
+            "max": 0.553775
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 73.629948956,
+            "median": 1.0986856665,
+            "max": 2.342526209
+          },
+          "load_duration_seconds": {
+            "sum": 0.201587332,
+            "median": 0.002147313,
+            "max": 0.042074083
+          },
+          "eval_duration_seconds": {
+            "sum": 17.657486,
+            "median": 0.287056,
+            "max": 0.543148
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        },
+        {
+          "total_duration_seconds": {
+            "sum": 69.089331792,
+            "median": 1.0274263545,
+            "max": 2.25315925
+          },
+          "load_duration_seconds": {
+            "sum": 0.140144753,
+            "median": 0.001612979,
+            "max": 0.021032417
+          },
+          "eval_duration_seconds": {
+            "sum": 15.535146999,
+            "median": 0.2412305,
+            "max": 0.855959
+          },
+          "prompt_eval_count": {
+            "sum": 16800.0,
+            "median": 252.0,
+            "max": 527.0
+          },
+          "eval_count": {
+            "sum": 600.0,
+            "median": 10.0,
+            "max": 10.0
+          }
+        }
+      ],
+      "worker_accepted_counts": [
+        [
+          60
+        ],
+        [
+          60
+        ],
+        [
+          60
+        ]
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "repetition": 0,
+      "elapsed_seconds": 74.51855754197459,
+      "submission_seconds": 0.039811541995732114,
+      "export_seconds": 0.08431462501175702,
+      "observed_http_union_seconds": 72.62337799265515,
+      "outside_observed_http_includes": "worker startup, local validation/files, HTTP client scheduling, controller polling/export; not a disk/DB attribution",
+      "outside_observed_http_seconds": 1.8951795493194368,
+      "route_intervals": {
+        "coordinator /v1/attempts/*/complete": {
+          "count": 60,
+          "median_seconds": 0.005350812483811751,
+          "sum_seconds": 0.48919766294420697
+        },
+        "coordinator /v1/claims": {
+          "count": 61,
+          "median_seconds": 0.004645125009119511,
+          "sum_seconds": 0.4181789959548041
+        },
+        "runtime /api/generate": {
+          "count": 60,
+          "median_seconds": 1.0350540420040488,
+          "sum_seconds": 71.05824292000034
+        },
+        "runtime /api/tags": {
+          "count": 182,
+          "median_seconds": 0.0016302919975714758,
+          "sum_seconds": 0.4453285388299264
+        },
+        "runtime /api/version": {
+          "count": 182,
+          "median_seconds": 0.0009023540042107925,
+          "sum_seconds": 0.21242987492587417
+        }
+      },
+      "runtime_reported_generation_seconds": 70.465276546
+    },
+    {
+      "repetition": 1,
+      "elapsed_seconds": 73.65697633297532,
+      "submission_seconds": 0.04174670798238367,
+      "export_seconds": 0.12022304098354653,
+      "observed_http_union_seconds": 71.81708779747714,
+      "outside_observed_http_includes": "worker startup, local validation/files, HTTP client scheduling, controller polling/export; not a disk/DB attribution",
+      "outside_observed_http_seconds": 1.8398885354981758,
+      "route_intervals": {
+        "coordinator /v1/attempts/*/complete": {
+          "count": 60,
+          "median_seconds": 0.006228895508684218,
+          "sum_seconds": 0.4148005418246612
+        },
+        "coordinator /v1/claims": {
+          "count": 61,
+          "median_seconds": 0.005114334024256095,
+          "sum_seconds": 0.437794496974675
+        },
+        "runtime /api/generate": {
+          "count": 60,
+          "median_seconds": 1.0122198960016249,
+          "sum_seconds": 70.28833508782554
+        },
+        "runtime /api/tags": {
+          "count": 182,
+          "median_seconds": 0.001842708486947231,
+          "sum_seconds": 0.4534969629603438
+        },
+        "runtime /api/version": {
+          "count": 182,
+          "median_seconds": 0.0009608750115148723,
+          "sum_seconds": 0.22266070789191872
+        }
+      },
+      "runtime_reported_generation_seconds": 69.928289871
+    },
+    {
+      "repetition": 2,
+      "elapsed_seconds": 65.21344366701669,
+      "submission_seconds": 0.028009083995129913,
+      "export_seconds": 0.059074291988508776,
+      "observed_http_union_seconds": 64.0770175352227,
+      "outside_observed_http_includes": "worker startup, local validation/files, HTTP client scheduling, controller polling/export; not a disk/DB attribution",
+      "outside_observed_http_seconds": 1.1364261317939963,
+      "route_intervals": {
+        "coordinator /v1/attempts/*/complete": {
+          "count": 60,
+          "median_seconds": 0.003792500006966293,
+          "sum_seconds": 0.27132191506098025
+        },
+        "coordinator /v1/claims": {
+          "count": 61,
+          "median_seconds": 0.004329000017605722,
+          "sum_seconds": 0.2686945420864504
+        },
+        "runtime /api/generate": {
+          "count": 60,
+          "median_seconds": 0.9547749580087839,
+          "sum_seconds": 63.09574099894962
+        },
+        "runtime /api/tags": {
+          "count": 182,
+          "median_seconds": 0.001343228985206224,
+          "sum_seconds": 0.289284124301048
+        },
+        "runtime /api/version": {
+          "count": 182,
+          "median_seconds": 0.0006707499996991828,
+          "sum_seconds": 0.15197595482459292
+        }
+      },
+      "runtime_reported_generation_seconds": 62.918751665
+    }
+  ],
+  "observer_pairs": [
+    {
+      "repetition": 0,
+      "off_seconds": 78.70436341600725,
+      "on_seconds": 74.51855754197459,
+      "on_minus_off_seconds": -4.185805874032667
+    },
+    {
+      "repetition": 1,
+      "off_seconds": 76.91733908298193,
+      "on_seconds": 73.65697633297532,
+      "on_minus_off_seconds": -3.260362750006607
+    },
+    {
+      "repetition": 2,
+      "off_seconds": 71.96022216699203,
+      "on_seconds": 65.21344366701669,
+      "on_minus_off_seconds": -6.746778499975335
+    }
+  ],
+  "owned_processes_stopped": true,
+  "model_residency_restored": true,
+  "host_context": {
+    "system_load_average_1min_snapshot_range": [
+      3.1728515625,
+      36.2197265625
+    ],
+    "background_cpu_activity_observed": true,
+    "system_memory_free_percentage_snapshot_range": [
+      26,
+      66
+    ],
+    "thermal_snapshot_commands_succeeded": true,
+    "continuous_gpu_thermal_or_peak_memory_measurement": false
+  },
+  "limitations": [
+    "Synthetic extraction corpus; not a customer/model-quality benchmark.",
+    "One shared Mac/runtime; offered slots do not establish physical parallelism.",
+    "Model-unloaded does not mean cold OS/filesystem cache; within-run prefix caching remains.",
+    "Startup probes use12 inputs; baseline batches use200. Do not compare makespans as equivalent.",
+    "Profile runs use60 inputs and external observers; calibration pairs are separate from baseline.",
+    "Outside observed HTTP is not a disk or SQLite attribution.",
+    "Runtime-reported durations can overlap across slots and are not additive wall-clock overhead.",
+    "Other apps/clients, power state and continuous GPU thermals are uncontrolled."
+  ]
+}

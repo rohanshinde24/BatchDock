@@ -85,7 +85,7 @@ P0 adds a stop-only finish policy, private per-attempt outcome observations and 
 
 The real-model check ran locally with an installed `gemma2:2b`; it installs no models and requires a running coordinator. The HTTP workers and transient-failure endpoint are simulations, not inference benchmarks. CI repeats the unit, HTTP, transient-worker and simulated-inference SSH harness checks without requiring Ollama. [Verified implementation CI run](https://github.com/rohanshinde24/BatchDock/actions/runs/45174925672).
 
-The [controlled single-Mac protocol](docs/SINGLE-MAC-BASELINE.md) adds200 unique synthetic extraction records, model-resident baselines, separate model-unloaded startup probes and external overhead profiling. Results remain single-host evidence; physical P1 is pending.
+The [controlled single-Mac protocol](docs/SINGLE-MAC-BASELINE.md) adds 200 unique synthetic extraction records, model-resident baselines, separate model-unloaded startup probes and external overhead profiling. The [measured results](docs/SINGLE-MAC-RESULTS.md) include 30 real-inference runs / 2,904 validated outputs and one-worker traces dominated by inference. Host contention limits performance conclusions; physical P1 is pending.
 
 ## Limits and next steps
 
