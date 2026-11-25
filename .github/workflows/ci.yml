@@ -22,6 +22,7 @@ jobs:
       - name: Swift toolchain
         run: swift --version
       - name: Build and test
+        id: build
         run: swift test --parallel --jobs 3
       - name: Coordinator HTTP acceptance
         run: python3 scripts/acceptance.py
@@ -34,9 +35,20 @@ jobs:
           python3 scripts/benchmark-local.py --output-dir .batchdock/ci-emulation --records 200 --repetitions 1
           python3 scripts/verify-local-benchmark.py .batchdock/ci-emulation
           python3 scripts/test-verify-local-benchmark.py .batchdock/ci-emulation
+      - name: SSH policy diagnostics on failure
+        if: failure()
+        run: |
+          if [ -f .batchdock/ci-emulation/ssh/sshd_config ]; then
+            python3 scripts/inspect-ssh-policy.py .batchdock/ci-emulation
+          fi
+      - name: Report and native diagnostic syntax
+        if: ${{ !cancelled() }}
+        run: python3 -m py_compile scripts/summarize-single-mac.py scripts/profile-worker-native.py scripts/inspect-ssh-policy.py
       - name: Controlled single-Mac contracts
+        if: ${{ !cancelled() }}
         run: python3 scripts/test-single-mac.py
       - name: Controlled single-Mac harness (simulated inference)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: |
           python3 scripts/benchmark-single-mac.py --runtime fixture --repetitions 1 --output-dir .batchdock/ci-baseline
           python3 scripts/verify-single-mac.py .batchdock/ci-baseline
